@@ -23,3 +23,9 @@ venv/
 # OS dosyaları
 .DS_Store
 Thumbs.db
+
+resimler/
+*.png
+*.jpg
+*.jpeg
+*.PNG
