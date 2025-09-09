@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="content-language" content="tr">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>SEVA | Hakkımızda</title>
+  <meta name="description" content="SEVA Studio & Store: Sanata ve yaratıcılığa adanmış bir buluşma noktası. Hikayemizi keşfedin.">
+  <meta name="keywords" content="hakkımızda, SEVA, sanat galerisi, Tatvan, Bitlis">
+  <link rel="canonical" href="https://www.sevastudio.com/hakkımızda.html">
+  <link rel="stylesheet" href="hakkimizda.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SEVA | Hakkımızda">
+  <meta property="og:description" content="SEVA Studio & Store'un hikayesi.">
+  <meta property="og:url" content="https://www.sevastudio.com/hakkımızda.html">
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">
+            <img src="resimler/logo_transparent.png" alt="SEVA Studio Logo"></a>
+        <button class="menu-toggle" id="menu-toggle">&#9776;</button>
+        <nav class="navbar" id="navbar">
+            <ul>
+                <li><a href="workshop.html">Etkinlikler</a></li>
+                <li><a href="seramikkurs.html">Kurslar</a></li>
+                <li><a href="hakkimizda.html">Hakkımızda</a></li>
+                <li><a href="#">Ürünlerimiz</a></li>
+                <li>
+                   <a href="cart.html">Sepetim <span id="navCartCount" style="font-weight: 700">0</span> 🛒</a>
+                </li>
+                <li><a id="navAuthLink" href="auth.html">Giriş|Kayıt</a></li>
+                <li><a  id="navLogout" href="#" style="display: none">Çıkış</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hakkimizda">
+      <div class="hakkimizda-container">
+        <h2 class="hakkimizda-baslik">Hakkımızda</h2>
+        <hr>
+        <p>
+          <strong>SEVA Studio & Store,</strong>Tatvan’ın kalbinde, yaratıcılığın özgürce aktığı butik bir sanat alanına davetlisiniz! <br>
+            SEVA Studio & Store, seramikten mum tasarımına, resimden su kabağı ve punch atölyerine kadar geniş bir yelpazede el emeği ve estetiği birleştiren deneyimler sunuyor. <br> Atölyelerimiz; <br>
+           *Seramik Atölyesi <br>*Seramik Kurs Dört Ders - Seramik Modelleme,Seramik Renklendirme/Sıralama <br> *Çini Atölyesi <br>*Mum Atölyesi <br>*Amigurumi&Nakış Atölyeleri <br>*Resim/Sulu Boya Atölyeleri <br> *Ayna Boyama Etkinliği <br>*Seramik+Mum+Boyama Etkinliği <br>*Konsept Etkinlikler <br>Etkinlik ve Kurslar Hakkında Daha Fazla Bilgi İçin "ETKİNLİKLER" ve "KURSLAR" Kısmına tıklayabilirsiniz. <br>
+           <strong>El Yapımı Ürünler & Özel Tasarımlar</strong> <br> SEVA'da Aynı zamanda el yapımı dekoratif ürünler ve sanat odaklı özel tasarımlar bulabileceğiniz bir mağaza. <br>*Kokulu Mum Koleksiyonları <br>*Seramik Objeler <br>*Su Kabağı Tasarımları <br>*Amigurumi Figürler <br>*Makrome Ürünler <br>*Kişiye Özel Ürünler
+           <strong>Neredeyiz?</strong> <br>Konum Bilgileri İçin Sayfaların en altında ki <strong>"KONUMU GÖR"</strong> Kısmına Tıklayabilirsiniz. <br><strong>Neden SEVA Studio & Store?</strong> <br>*Butik Ve Samimi Bir ortam <br>*Küçük Gruplara Birebir İlgi <br>*Yaratıcı,Özgür Ve Eğlenceli Öğrenme Deneyimi <br>*Sürdürülebilir Malzemeler İle Üretim
+           <strong>Hemen Yerini Ayırt!</strong> <br>Her ay düzenlenen etkinliklerimiz için kontejanlar sınırlı! <br>Web Sitemizden veya Instagram hesabımız <strong>@seva.studio.store</strong> üzerinden kolayca kayıt olabilirsiniz.
+           Web Sitemiz Güncellenmekte olup en kısa sürede <strong>ÖDEME</strong> ve <strong>KAYIT</strong> ekranı ile sizinle olacaktır.
+           <strong>SEVA</strong>, yalnızca bir atölye değil; <br>Aynı zamanda <strong>sanat</strong>,<strong>tasarım</strong> ve <strong>paylaşımın</strong> bir araya geldiği bir topluluk. <br>İster kendi ürününüzü tasarlamak,ister bir hediye hazırlamak,ister sadece yeni bir şeyler keşfetmek için gelin; burada herkes için bir hikaye var. <br>🌿<strong>Üret,Keşfet,Paylaş.</strong> <br>SEVA Studio & Store'a Hoş Geldiniz. 
+        </p>
+      </div>
+    </section>
+
+
+
+    <button class="chat-toggle" onclick="toggleChat()">💬</button>
+
+    <div class="chatbox" id="chatbox" style="display: none;">
+        <div class="chat-header">
+            Yapay Zeka SEVA🎨
+            <span class="close-btn" onclick="toggleChat()">✖</span>
+        </div>
+        <div class="chatlogs" id="chatlogs">
+            <div class="bot">Merhaba! Sana nasıl yardımcı olabilirim?</div>
+        </div>
+        <input type="text" id="userInput" placeholder="Bir şeyler yaz..." onkeydown="if(event.key==='Enter'){sendMessage()}">
+    </div>
+    
+    <footer class="footer">
+      <div class="footer-container">
+       <div class="footer-left">
+         <h2>SEVA STUDIO&STORE</h2>
+       </div>
+      
+       <div class="footer-center">
+        <a href="https://maps.apple.com/place?address=Abdulkerim%20%C3%87evik%20Cd.%208,%2013200%20Tatvan%20Bitlis,%20T%C3%BCrkiye&coordinate=38.497033,42.283696&name=Seva%20Studio%20%26%20Store&place-id=IF25B009F55AB5544&map=h" 
+             target="_blank" rel="noopener noreferrer">
+            Konumu Gör
+         <p>&copy; 2025 SEVA Tüm hakları saklıdır.</p>
+          <p>HELEN SOFTWARE</p>
+       </div>
+      
+       <div class="footer-right">
+         <a href="#"><i class="fab fa-facebook-f"></i></a>
+         <a href="https://wa.me/905386188297" target="_blank"><i class="fab fa-whatsapp"></i></a>
+         <a href="https://www.instagram.com/seva.studio.store/"><i class="fab fa-instagram"></i></a>
+       </div>
+      </div>
+    </footer>
+
+    <script src="hamburger.js"></script>
+    <script src="auth.js"></script>
+</body>
+</html>

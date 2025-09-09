@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ödeme Başarılı</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="success-box">
+    <h1>✅ Ödeme Bilgileri Oluşturuldu</h1>
+    <p>Sipariş numaranız: <span id="orderNo"></span></p>
+    <p>Lütfen bu numarayı ödeme açıklamasında kullanın.</p>
+    <a href="index.html">Anasayfaya Dön</a>
+  </div>
+
+  <script>
+    // URL'deki order parametresini yakala
+    const params = new URLSearchParams(window.location.search);
+    const orderNo = params.get("order");
+    if(orderNo){
+      document.getElementById("orderNo").textContent = orderNo;
+    }
+  </script>
+</body>
+</html>

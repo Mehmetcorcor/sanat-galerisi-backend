@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="content-language" content="tr">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>SEVA Studio & Store | Sanat Galerisi & Atölyeler</title>
+  <meta name="description" content="SEVA Studio & Store: Sanat galerisi, yaratıcı atölyeler ve kurslarla hayal gücünüzü özgür bırakabileceğiniz bir buluşma noktası.">
+  <meta name="keywords" content="sanat galerisi, atölye, workshop, kurs, etkinlik, Bitlis, Tatvan, SEVA">
+  <link rel="canonical" href="https://www.sevastudio.com/index.html">
+
+  <meta name="robots" content="index,follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SEVA Studio & Store">
+  <meta property="og:title" content="SEVA Studio & Store | Sanat Galerisi & Atölyeler">
+  <meta property="og:description" content="Sanat galerisi ve yaratıcı atölyelerle sanat dolu bir deneyim.">
+  <meta property="og:url" content="https://www.sevastudio.com/index.html">
+  <meta property="og:image" content="https://www.sevastudio.com/resimler/og-default.jpg">
+  <meta property="og:locale" content="tr_TR">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SEVA Studio & Store | Sanat Galerisi & Atölyeler">
+  <meta name="twitter:description" content="Sanat galerisi ve yaratıcı atölyelerle sanat dolu bir deneyim.">
+  <meta name="twitter:image" content="https://www.sevastudio.com/resimler/og-default.jpg">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "SEVA Studio & Store",
+    "url": "https://www.sevastudio.com",
+    "logo": "https://www.sevastudio.com/resimler/logo_transparent.png",
+    "sameAs": ["https://www.instagram.com/seva.studio.store/"]
+  }
+  </script>
+</head>
+<body data-page="home">
+    <div class="hero">
+        <div class="content">
+            <h1 class="logo">
+             <a href="index.html" aria-label="SEVA Studio & Store">
+               <img src="resimler/logo_transparent.png" alt="SEVA Studio & Store">
+             </a>
+            </h1>
+            <div class="buttons">
+                <a href="workshop.html">Etkinlikler</a>
+                <a href="atölye.html">Kurslar</a>
+                <a href="hakkimizda.html">Hakkımızda</a>
+                <a href="#">Ürünlerimiz</a>
+                <a href="auth.html">Giriş|Kayıt</a>
+            </div>
+            <div class="social">
+                <a href="https://www.instagram.com/seva.studio.store/"><i class="fab fa-instagram"></i></a>
+            </div>
+            <div class="whatsapp">
+                <a href="https://wa.me/905386188297" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Bizimle iletişime geçin
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Kısmı -->
+    <button class="chat-toggle" onclick="toggleChat()">💬</button>
+    <div class="chatbox" id="chatbox" style="display: none;">
+        <div class="chat-header">
+            Yapay Zeka SEVA🎨
+            <span class="close-btn" onclick="toggleChat()">✖</span>
+        </div>
+        <div class="chatlogs" id="chatlogs">
+            <div class="bot">Merhaba! Sana nasıl yardımcı olabilirim?</div>
+        </div>
+        <input type="text" id="userInput" placeholder="Bir şeyler yaz..." onkeydown="if(event.key==='Enter'){sendMessage()}">
+    </div>
+
+    <!-- Script sırası önemli -->
+    <script src="chat.js"></script>
+</body>
+</html>

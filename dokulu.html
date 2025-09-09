@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="content-language" content="tr">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>SEVA | Dokulu Tuval Etkinliği</title>
+  <meta name="description" content="Tuval üzerine farklı dokularla kendi sanatınızı yaratın. SEVA Dokulu Tuval etkinliği.">
+  <meta name="keywords" content="dokulu tuval, tuval boyama, sanat atölyesi, SEVA, Tatvan, Bitlis">
+  <link rel="canonical" href="https://www.sevastudio.com/dokulu.html">
+  <link rel="stylesheet" href="dokulu.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <meta property="og:type" content="event">
+  <meta property="og:title" content="Dokulu Tuval Etkinliği">
+  <meta property="og:description" content="Tuval üzerinde dokulu sanat çalışmaları.">
+  <meta property="og:url" content="https://www.sevastudio.com/dokulu.html">
+  <meta property="og:image" content="https://www.sevastudio.com/resimler/dokulu.jpg">
+</head>
+<body>
+    <!---BAŞLIK BÖLÜMÜ|HEADER SECTİON-->
+    <header class="header">
+        <a href="index.html" class="logo">
+            <img src="resimler/logo_transparent.png" alt="SEVA Studio Logo"></a>
+        <button class="menu-toggle" id="menu-toggle">&#9776;</button>
+        <nav class="navbar" id="navbar">
+            <ul>
+                <li><a href="workshop.html">Etkinlikler</a></li>
+                <li><a href="seramikkurs.html">Kurslar</a></li>
+                <li><a href="hakkimizda.html">Hakkımızda</a></li>
+                <li><a href="#">Ürünlerimiz</a></li>
+                <li>
+                   <a href="cart.html">Sepetim <span id="navCartCount" style="font-weight: 700">0</span> 🛒</a>
+                </li>
+                <li><a id="navAuthLink" href="auth.html">Giriş|Kayıt</a></li>
+                <li><a  id="navLogout" href="#" style="display: none">Çıkış</a></li>
+            </ul>
+        </nav>
+    </header>
+    <!---BAŞLIK BÖLÜMÜ SON|HEADER SECTİON END-->
+    <!---FİLM GALERİSİ BÖLÜMÜ|GALERRY SECTİON-->
+     <section class="event-calendar">
+        <img src="resimler/dokuluyeni.PNG" alt="Etkinlik takvimi">
+    </section>
+    <section class="carousel-wrapper">
+        <h2 class="slide-title">Dokulu Tuval</h2>
+        <button class="carousel-button left">&#10094</button>
+        <div class="carousel-viewport" id="carouselViewport">
+            <div class="carousel-track" id="carouselTrack">
+            <div class="carousel-slide"><img src="resimler/dokulu1.jpg" alt="RESİM WORKSHOP1"></div>
+            <div class="carousel-slide"><img src="resimler/dokulu2.jpg" alt="RESİM WORKSHOP2"></div>
+            <div class="carousel-slide"><img src="resimler/dokulu3.jpg" alt="RESİM WORKSHOP3"></div>
+            <div class="carousel-slide"><img src="resimler/dokulu4.jpg" alt="RESİM WORKSHOP4"></div>
+            <div class="carousel-slide"><img src="resimler/dokulu5.jpg" alt="RESİM WORKSHOP5"></div>
+            <div class="carousel-slide"><img src="resimler/dokulu6.jpg" alt="RESİM WORKSHOP6"></div>
+            <div class="carousel-slide"><img src="resimler/dokulu7.jpg" alt="RESİM WORKSHOP7"></div>
+
+            <div class="carousel-slide"><img src="resimler/dokulu1.jpg" alt="RESİM WORKSHOP1"></div>
+            <div class="carousel-slide"><img src="resimler/dokulu2.jpg" alt="RESİM WORKSHOP2"></div>
+            <div class="carousel-slide"><img src="resimler/dokulu3.jpg" alt="RESİM WORKSHOP3"></div>
+            <div class="carousel-slide"><img src="resimler/dokulu4.jpg" alt="RESİM WORKSHOP4"></div>
+            <div class="carousel-slide"><img src="resimler/dokulu5.jpg" alt="RESİM WORKSHOP5"></div>
+            <div class="carousel-slide"><img src="resimler/dokulu6.jpg" alt="RESİM WORKSHOP6"></div>
+            <div class="carousel-slide"><img src="resimler/dokulu7.jpg" alt="RESİM WORKSHOP7"></div>
+        </div> 
+        </div>    
+        <button class="carousel-button right">&#10095</button>          
+    </section>
+    <!---FİLM GALERİSİ BÖLÜM SON|FİLM GALLERY SECTİON END-->
+    <!---WORKSHOP BİLGİ BÖLÜMÜ|WORKSHOP İNFO SECTİON-->
+    <section class="resimworkshop-info">
+        <h2>Dokulu Tuval</h2>
+        <p>Dokulu Tuval etkinliğimizde tuval üzerine rölyef çalışmaları ile doku kazandırılır ve renklendirilir. <br>Tüm etkinliklerimizde tüm malzemeler tarafımızca sağlanır, eğitmen eşliğinde kendi parçalarınızı üretirsiniz. </p>
+    </section>
+    <!--WORKSHOP BİLGİ SON|WORKSHOP İNFO END-->
+    <!--BİLET AL BUTONU|TİCKET BUTTON-->
+    <section class="ticket">
+      <!-- Eski: <a href="biletal.html" ...> -->
+      <a
+        href="#"
+        class="ticket-button add-to-cart"
+        data-schedule-btn
+        data-event-id="dokulu-tuval"
+        data-event-title="Dokulu Tuval Etkinliği"
+        data-default-price="800"
+      >KATILMAK İÇİN BİLET AL</a>
+
+      <div id="scheduleBox" class="schedule-box" style="display: none;"></div>
+    </section>
+    
+    <!--BİLET AL BUTONU SON|TİCKET BUTTON END-->
+
+
+    <button class="chat-toggle" onclick="toggleChat()">💬</button>
+
+    <div class="chatbox" id="chatbox" style="display: none;">
+        <div class="chat-header">
+            Yapay Zeka SEVA🎨
+            <span class="close-btn" onclick="toggleChat()">✖</span>
+        </div>
+        <div class="chatlogs" id="chatlogs">
+            <div class="bot">Merhaba! Sana nasıl yardımcı olabilirim?</div>
+        </div>
+        <input type="text" id="userInput" placeholder="Bir şeyler yaz..." onkeydown="if(event.key==='Enter'){sendMessage()}">
+    </div>
+
+    <footer class="footer">
+      <div class="footer-container">
+       <div class="footer-left">
+         <h2>SEVA STUDIO&STORE</h2>
+       </div>
+      
+       <div class="footer-center">
+         <a href="https://maps.apple.com/place?address=Abdulkerim%20%C3%87evik%20Cd.%208,%2013200%20Tatvan%20Bitlis,%20T%C3%BCrkiye&coordinate=38.497033,42.283696&name=Seva%20Studio%20%26%20Store&place-id=IF25B009F55AB5544&map=h" 
+             target="_blank" rel="noopener noreferrer">
+            Konumu Gör
+         <p>&copy; 2025 SEVA Tüm hakları saklıdır.</p>
+          <p>HELEN Software</p>
+       </div>
+      
+       <div class="footer-right">
+         <a href="#"><i class="fab fa-facebook-f"></i></a>
+         <a href="https://wa.me/905386188297" target="_blank"><i class="fab fa-whatsapp"></i></a>
+         <a href="https://www.instagram.com/seva.studio.store/"><i class="fab fa-instagram"></i></a>
+       </div>
+      </div>
+    </footer>
+
+    <script src="galeri.js"></script>
+    <script src="hamburger.js"></script>
+    <script src="nav.js"></script>
+    <script src="event-scheduler.js"></script>
+    
+</body>
+</html>

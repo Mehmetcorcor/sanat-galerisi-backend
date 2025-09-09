@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sepetim | SEVA</title>
+  <style>
+    :root { --brown:#8B4513; --bg:#faf7f4; }
+    body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);margin:0}
+    .wrap{max-width:1000px;margin:24px auto;padding:0 16px}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    header .nav a{margin-left:10px;text-decoration:none;border:1px solid #ddd;padding:8px 12px;border-radius:10px;background:#fff}
+    h1{margin:.2rem 0 1rem}
+    .card{background:#fff;border:1px solid #eee;border-radius:14px;padding:16px;box-shadow:0 4px 20px rgba(0,0,0,.04)}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;border-bottom:1px solid #eee;text-align:left}
+    tfoot td{font-weight:700}
+    .empty{padding:20px;text-align:center;color:#666}
+    .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .btn{padding:10px 14px;border-radius:10px;cursor:pointer}
+    .btn.outline{border:1px solid #ddd;background:#fff}
+    .btn.primary{border:none;background:var(--brown);color:#fff;font-weight:600}
+    .btn[disabled]{opacity:.6;pointer-events:none}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div><a href="index.html"><img src="resimler/logo_transparent.png" alt="SEVA" style="height:40px"></a></div>
+      <nav class="nav">
+        <a href="index.html">Anasayfa</a>
+        <a href="workshop.html">Etkinlikler</a>
+        <a href="cart.html">Sepetim 🛒</a>
+      </nav>
+    </header>
+
+    <h1>Sepetim</h1>
+
+    <div class="card">
+      <table id="tbl">
+        <thead>
+          <tr>
+            <th>Etkinlik</th>
+            <th>Tarih</th>
+            <th>Saat</th>
+            <th>Adet</th>
+            <th>Birim</th>
+            <th>Ara Toplam</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- JS dolduracak -->
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5">Toplam</td>
+            <td id="total">0 ₺</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <div id="empty" class="empty" style="display:none;">Sepetin boş.</div>
+
+      <div class="actions">
+        <button id="clear" class="btn outline">Sepeti Temizle</button>
+        <a href="workshop.html" class="btn outline">Alışverişe Devam Et</a>
+        <a id="pay" href="#" class="btn primary">Ödemeye Geç</a>
+      </div>
+    </div>
+  </div>
+
+<script>
+const CART_KEY = "seva_cart";
+const $ = s => document.querySelector(s);
+const tbody = $("#tbl tbody"), totalEl = $("#total"), pay = $("#pay"), empty = $("#empty");
+
+function load(){ try { return JSON.parse(localStorage.getItem(CART_KEY) || "[]"); } catch { return []; } }
+function save(items){ localStorage.setItem(CART_KEY, JSON.stringify(items)); }
+
+function trDate(iso){
+  const [y,m,d]=iso.split("-").map(Number);
+  const months=["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
+  return `${d} ${months[m-1]} ${y}`;
+}
+
+function render(){
+  const items = load();
+  if (items.length === 0) {
+    tbody.innerHTML = "";
+    empty.style.display = "block";
+    totalEl.textContent = "0 ₺";
+    pay.href = "#"; pay.setAttribute("disabled","true");
+    return;
+  }
+  empty.style.display = "none";
+  tbody.innerHTML = items.map((it,i)=>`
+    <tr>
+      <td>${it.title || "-"}</td>
+      <td>${trDate(it.date)}</td>
+      <td>${it.time}</td>
+      <td>${it.qty}</td>
+      <td>${it.unitPrice} ₺</td>
+      <td>${it.subtotal} ₺</td>
+      <td><button class="btn outline" data-remove="${i}">Sil</button></td>
+    </tr>
+  `).join("");
+
+  const total = items.reduce((a,b)=> a + (Number(b.subtotal)||0), 0);
+  totalEl.textContent = total + " ₺";
+  pay.href = "payment.html?amount=" + encodeURIComponent(total);
+  pay.removeAttribute("disabled");
+}
+
+document.addEventListener("click",(e)=>{
+  const btn = e.target.closest("[data-remove]");
+  if(!btn) return;
+  const idx = +btn.getAttribute("data-remove");
+  const items = load();
+  items.splice(idx,1);
+  save(items);
+  render();
+});
+
+$("#clear").onclick = ()=>{ save([]); render(); };
+
+render();
+</script>
+</body>
+</html>

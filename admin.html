@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Admin • Siparişler</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:1100px;margin:24px auto;padding:0 16px}
+  h1{margin:.2rem 0 1rem}
+  .row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  input,button,select{padding:10px;border:1px solid #ddd;border-radius:8px}
+  button{cursor:pointer}
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:10px;border-bottom:1px solid #eee;text-align:left;vertical-align:top}
+  .pill{padding:4px 8px;border-radius:999px;border:1px solid #ddd;font-size:.85rem}
+  .pill.paid{background:#e9f8ed;border-color:#8ad19d}
+  .pill.pending{background:#fff7e6;border-color:#f2c46b}
+  .pill.cancelled{background:#fdeaea;border-color:#f19b9b}
+  .muted{color:#666}
+  .actions{display:flex;gap:6px}
+  pre{white-space:pre-wrap;background:#fafafa;border:1px solid #eee;padding:10px;border-radius:8px}
+</style>
+</head>
+<body>
+  <h1>Admin • Siparişler</h1>
+
+  <div class="row">
+    <input id="adminKey" type="password" placeholder="Admin key" />
+    <button id="loadBtn">Listeyi Getir</button>
+  </div>
+
+  <table id="tbl">
+    <thead>
+      <tr>
+        <th>Tarih</th>
+        <th>Order No</th>
+        <th>Kullanıcı</th>
+        <th>Tutar</th>
+        <th>Durum</th>
+        <th>Ürünler</th>
+        <th>İşlem</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+  const BASE = "http://127.0.0.1:8000";
+  const $ = s => document.querySelector(s);
+  const tbody = $("#tbl tbody");
+
+  $("#loadBtn").onclick = load;
+
+  async function load(){
+    const key = $("#adminKey").value.trim();
+    if(!key){ alert("Admin key gir."); return; }
+    const r = await fetch(`${BASE}/orders?admin_key=${encodeURIComponent(key)}`);
+    if(!r.ok){ alert("Yetki hatası veya sunucu erişilemedi."); return; }
+    const arr = await r.json();
+    tbody.innerHTML = arr.map(rowToTr).join("") || `<tr><td colspan="7">Kayıt yok.</td></tr>`;
+  }
+
+  function rowToTr(o){
+    const items = Array.isArray(o.items) ? o.items : [];
+    const itemsHtml = items.length
+      ? `<pre>${items.map(formatItem).join("\n")}</pre>`
+      : `<span class="muted">—</span>`;
+    const pill = `<span class="pill ${o.status}">${o.status}</span>`;
+    const created = o.created_at ? new Date(o.created_at).toLocaleString("tr-TR") : "-";
+    return `
+      <tr>
+        <td>${created}</td>
+        <td><strong>${o.order_no}</strong><br><span class="muted">SEVA-${o.order_no}</span></td>
+        <td>${o.user_id ?? "-"}</td>
+        <td>${o.amount} ₺</td>
+        <td>${pill}</td>
+        <td>${itemsHtml}</td>
+        <td class="actions">
+          ${actionBtn(o.order_no,"paid","Ödendi")}
+          ${actionBtn(o.order_no,"pending","Beklemede")}
+          ${actionBtn(o.order_no,"cancelled","İptal")}
+        </td>
+      </tr>
+    `;
+  }
+  function formatItem(it){
+    const date = it.date || "-";
+    const time = it.time || "-";
+    const qty = it.qty || 0;
+    const unit = it.unitPrice || 0;
+    const sub = it.subtotal || (qty*unit);
+    return `• ${it.title || it.eventId || "Etkinlik"} | ${date} ${time} | ${qty} adet x ${unit} ₺ = ${sub} ₺`;
+  }
+  function actionBtn(orderNo, status, text){
+    return `<button onclick="updateStatus('${orderNo}','${status}')">${text}</button>`;
+  }
+
+  window.updateStatus = async (orderNo, status) => {
+    const key = $("#adminKey").value.trim();
+    if(!key) return alert("Admin key gir.");
+    const r = await fetch(`${BASE}/orders/${orderNo}/status?new_status=${status}&admin_key=${encodeURIComponent(key)}`, {method:"PATCH"});
+    if(!r.ok){ return alert("Güncellenemedi."); }
+    load();
+  };
+  </script>
+</body>
+</html>

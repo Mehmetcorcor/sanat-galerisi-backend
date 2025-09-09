@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Giriş / Kayıt - SEVA</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f9f9f9;
+      color: #333;
+    }
+    header {
+      background: #8B4513;
+      padding: 15px 9%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header .logo img {
+      height: 70px;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .auth-container {
+      max-width: 420px;
+      margin: 80px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    }
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #eee;
+    }
+    .auth-tab {
+      flex: 1;
+      text-align: center;
+      padding: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      border-bottom: 2px solid transparent;
+      transition: 0.3s;
+    }
+    .auth-tab.is-active {
+      border-color: #8B4513;
+      color: #8B4513;
+    }
+    .auth-pane {
+      display: none;
+    }
+    .auth-pane.is-active {
+      display: block;
+    }
+    label {
+      font-size: 14px;
+      display: block;
+      margin: 12px 0 6px;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 12px;
+      background: #8B4513;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #a0522d;
+    }
+    .auth-msg {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .auth-msg.err { color: #b00020; }
+    .auth-msg.ok { color: #2e7d32; }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <a href="index.html" class="logo">
+      <img src="resimler/logo_transparent.png" alt="SEVA Studio Logo" />
+    </a>
+    <nav>
+      <ul>
+        <li><a href="index.html">Anasayfa</a></li>
+        <li><a href="workshop.html">Etkinlikler</a></li>
+        <li><a href="cart.html">Sepetim</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- FORM KAPSAYICI -->
+  <div class="auth-container">
+    <div class="tabs">
+      <div class="auth-tab is-active" data-tab="login">Giriş Yap</div>
+      <div class="auth-tab" data-tab="register">Kayıt Ol</div>
+    </div>
+
+    <!-- Giriş Paneli -->
+    <div id="pane-login" class="auth-pane is-active">
+      <label for="logEmail">E-posta</label>
+      <input id="logEmail" type="email" placeholder="ornek@mail.com" />
+
+      <label for="logPassword">Şifre</label>
+      <input id="logPassword" type="password" placeholder="••••••" />
+
+      <button id="logBtn" type="button">Giriş Yap</button>
+      <div id="logMsg" class="auth-msg"></div>
+    </div>
+
+    <!-- Kayıt Paneli -->
+    <div id="pane-register" class="auth-pane">
+      <label for="regEmail">E-posta</label>
+      <input id="regEmail" type="email" placeholder="ornek@mail.com" />
+
+      <label for="regPassword">Şifre</label>
+      <input id="regPassword" type="password" placeholder="••••••" />
+
+      <button id="regBtn" type="button">Kayıt Ol</button>
+      <div id="regMsg" class="auth-msg"></div>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+</body>
+</html>

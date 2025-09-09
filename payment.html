@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ödeme – Havale / FAST</title>
+  <style>
+    :root { --brown:#8B4513; --bg:#faf7f4; }
+    body{font-family:Arial,sans-serif;background:var(--bg);margin:0;padding:24px}
+    .wrap{max-width:720px;margin:0 auto}
+    h1{margin:.2rem 0 1rem}
+    .card{background:#fff;border:1px solid #eee;border-radius:14px;padding:18px 16px;box-shadow:0 4px 20px rgba(0,0,0,.04)}
+    .row{display:flex;gap:12px;flex-wrap:wrap;margin:.25rem 0}
+    .row .col{flex:1 1 220px}
+    input,button{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px}
+    button{background:var(--brown);color:#fff;font-weight:600;border:none;cursor:pointer}
+    .muted{color:#666;font-size:.9rem}
+    .kv{display:flex;align-items:center;justify-content:space-between;border:1px dashed #ddd;padding:10px;border-radius:10px;margin:8px 0}
+    .kv code{font-weight:700}
+    .copy{padding:6px 10px;border-radius:8px;border:1px solid #ddd;background:#f7f7f7;cursor:pointer}
+    .ok{color:green;font-weight:600}
+    .danger{color:#b00020}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Ödeme – Havale / FAST</h1>
+    <p class="muted">Sepet tutarınızı girin, size özel <b>order no</b> ve <b>açıklama</b> üretelim.</p>
+
+    <div class="card">
+      <div class="row">
+        <div class="col">
+          <label>Tutar (₺)</label>
+          <input id="amount" type="number" min="1" value="500" />
+        </div>
+        <div class="col">
+          <label>&nbsp;</label>
+          <button id="genBtn">Ödeme Bilgilerini Oluştur</button>
+        </div>
+      </div>
+
+      <div id="result" style="display:none;">
+        <h3>Havale / FAST Bilgileri</h3>
+
+        <div class="kv"><span>IBAN</span> <div><code id="iban">—</code> <button class="copy" data-copy="iban">Kopyala</button></div></div>
+        <div class="kv"><span>Alıcı</span> <div><code id="alici">—</code> <button class="copy" data-copy="alici">Kopyala</button></div></div>
+        <div class="kv"><span>Banka</span> <div><code id="banka">—</code></div></div>
+        <div class="kv"><span>Tutar</span> <div><code id="tutar">—</code></div></div>
+        <div class="kv"><span>Açıklama</span> <div><code id="aciklama">—</code> <button class="copy" data-copy="aciklama">Kopyala</button></div></div>
+        <p class="muted">Lütfen bankadan EFT/Havale/FAST yaparken <b>Açıklama</b> alanına yukarıdaki metni yazınız.</p>
+
+        <p id="ok" class="ok" style="display:none;">Ödeme bilgileri hazır ✅</p>
+      </div>
+
+      <p id="err" class="danger"></p>
+    </div>
+  </div>
+
+  <script>
+  const BASE = "http://127.0.0.1:8000"; // backend
+  const CART_KEY = "seva_cart";
+  const $ = (s)=>document.querySelector(s);
+
+  // URL?amount=750 geldiyse input'u otomatik doldur
+  (function autofillAmountFromURL(){
+    const params = new URLSearchParams(location.search);
+    if (params.has("amount")) {
+      const a = parseInt(params.get("amount"), 10);
+      if (!Number.isNaN(a) && a > 0) document.getElementById("amount").value = a;
+    }
+  })();
+
+  $("#genBtn").addEventListener("click", async () => {
+    $("#err").textContent = ""; $("#ok").style.display = "none";
+
+    const amount = parseInt($("#amount").value || "0", 10);
+    if (!amount || amount <= 0) { $("#err").textContent = "Lütfen geçerli bir tutar girin."; return; }
+
+    // Sepeti backend'e de kaydedelim (items_json)
+    let items = [];
+    try { items = JSON.parse(localStorage.getItem(CART_KEY) || "[]"); } catch {}
+
+    const body = new URLSearchParams({
+      amount: String(amount),
+      items_json: JSON.stringify(items)
+    });
+
+    // Giriş yapılmışsa token'ı header'a ekle (user_id kaydı için)
+    const headers = { "Content-Type": "application/x-www-form-urlencoded" };
+    const token = localStorage.getItem("token");
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+
+    // Yükleniyor durumu
+    const btn = $("#genBtn");
+    btn.disabled = true; btn.textContent = "Oluşturuluyor…";
+
+    try {
+      const r = await fetch(`${BASE}/payment/havale`, { method: "POST", headers, body });
+      const j = await r.json();
+
+      if(!r.ok){ $("#err").textContent = (j.detail || "Beklenmeyen hata"); return; }
+
+      // Ekrana yaz
+      $("#iban").textContent = j.iban;
+      $("#alici").textContent = j.alici;
+      $("#banka").textContent = j.banka || "-";
+      $("#tutar").textContent = j.tutar + " ₺";
+      $("#aciklama").textContent = j.aciklama;  // içinde SEVA-XXXX var
+      // Sayfanda #orderNo varsa ayrıca doldur (opsiyonel)
+      const orderNoEl = document.getElementById("orderNo");
+      if (orderNoEl && j.order_no) orderNoEl.textContent = j.order_no;
+
+      $("#result").style.display = "block";
+      $("#ok").style.display = "block";
+
+      localStorage.removeItem("seva_cart");
+      if (j.order_no) {
+        setTimeout(()=>{
+          location.href = "success.html?order=" + encodeURIComponent(j.order_no);
+        }, 1500);
+      }
+
+      // (İsteğe bağlı) Sepeti temizle:
+      // localStorage.removeItem(CART_KEY);
+    } catch (e) {
+      $("#err").textContent = e.message || "Bir hata oluştu.";
+    } finally {
+      btn.disabled = false; btn.textContent = "Ödeme Bilgilerini Oluştur";
+    }
+  });
+
+
+
+  // Kopyala butonları
+  document.addEventListener("click", (e)=>{
+    const btn = e.target.closest(".copy");
+    if(!btn) return;
+    const id = btn.getAttribute("data-copy");
+    const val = document.getElementById(id)?.textContent?.trim();
+    if(!val) return;
+    navigator.clipboard.writeText(val).then(()=> {
+      const old = btn.textContent;
+      btn.textContent = "Kopyalandı";
+      setTimeout(()=>btn.textContent = old || "Kopyala", 1200);
+    });
+  });
+</script>
+</body>
+</html>
