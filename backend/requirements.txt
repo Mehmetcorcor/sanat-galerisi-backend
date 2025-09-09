@@ -9,3 +9,4 @@ email-validator
 fastapi-mail
 python-dotenv
 gunicorn
+python-multipart
