@@ -20,6 +20,8 @@
     .copy{padding:6px 10px;border-radius:8px;border:1px solid #ddd;background:#f7f7f7;cursor:pointer}
     .ok{color:green;font-weight:600}
     .danger{color:#b00020}
+    #nextArea{display:none;margin-top:12px;gap:8px;flex-wrap:wrap}
+    #nextArea button{width:auto;padding:10px 14px}
   </style>
 </head>
 <body>
@@ -50,14 +52,24 @@
         <p class="muted">Lütfen bankadan EFT/Havale/FAST yaparken <b>Açıklama</b> alanına yukarıdaki metni yazınız.</p>
 
         <p id="ok" class="ok" style="display:none;">Ödeme bilgileri hazır ✅</p>
+
+        <!-- yeni: yönlendirmeyi kullanıcıya bırak -->
+        <div id="nextArea" class="row">
+          <button id="didPay">Ödemeyi yaptım, devam et</button>
+          <button id="printInfo" type="button">Yazdır / PDF</button>
+        </div>
       </div>
 
       <p id="err" class="danger"></p>
     </div>
   </div>
 
+  <!-- backend adresini buradan alıyoruz -->
+  <script src="config.js"></script>
+
   <script>
-  const BASE = "http://127.0.0.1:8000"; // backend
+  // backend kökü (config.js -> window.SEVA_API_BASE)
+  const BASE = (window.SEVA_API_BASE || "https://sanat-galerisi-backend.onrender.com").replace(/\/+$/,"");
   const CART_KEY = "seva_cart";
   const $ = (s)=>document.querySelector(s);
 
@@ -68,15 +80,31 @@
       const a = parseInt(params.get("amount"), 10);
       if (!Number.isNaN(a) && a > 0) document.getElementById("amount").value = a;
     }
+    // Son oluşturulan bilgileri geri yükle (sayfa kapanmışsa)
+    try {
+      const last = JSON.parse(localStorage.getItem("seva_last_payment") || "null");
+      if (last && last.aciklama && !document.getElementById("iban").textContent.trim()) {
+        fillPayment(last);
+        document.getElementById("result").style.display = "block";
+        document.getElementById("ok").style.display = "block";
+        document.getElementById("nextArea").style.display = "flex";
+        addLeaveGuard(); // uyarı aktif
+      }
+    } catch {}
   })();
 
   $("#genBtn").addEventListener("click", async () => {
     $("#err").textContent = ""; $("#ok").style.display = "none";
+    const btn = $("#genBtn"); btn.disabled = true; btn.textContent = "Oluşturuluyor…";
 
     const amount = parseInt($("#amount").value || "0", 10);
-    if (!amount || amount <= 0) { $("#err").textContent = "Lütfen geçerli bir tutar girin."; return; }
+    if (!amount || amount <= 0) {
+      $("#err").textContent = "Lütfen geçerli bir tutar girin.";
+      btn.disabled = false; btn.textContent = "Ödeme Bilgilerini Oluştur";
+      return;
+    }
 
-    // Sepeti backend'e de kaydedelim (items_json)
+    // sepeti backend'e de gönderelim (bilgi amaçlı)
     let items = [];
     try { items = JSON.parse(localStorage.getItem(CART_KEY) || "[]"); } catch {}
 
@@ -85,14 +113,9 @@
       items_json: JSON.stringify(items)
     });
 
-    // Giriş yapılmışsa token'ı header'a ekle (user_id kaydı için)
     const headers = { "Content-Type": "application/x-www-form-urlencoded" };
     const token = localStorage.getItem("token");
     if (token) headers["Authorization"] = `Bearer ${token}`;
-
-    // Yükleniyor durumu
-    const btn = $("#genBtn");
-    btn.disabled = true; btn.textContent = "Oluşturuluyor…";
 
     try {
       const r = await fetch(`${BASE}/payment/havale`, { method: "POST", headers, body });
@@ -100,28 +123,16 @@
 
       if(!r.ok){ $("#err").textContent = (j.detail || "Beklenmeyen hata"); return; }
 
-      // Ekrana yaz
-      $("#iban").textContent = j.iban;
-      $("#alici").textContent = j.alici;
-      $("#banka").textContent = j.banka || "-";
-      $("#tutar").textContent = j.tutar + " ₺";
-      $("#aciklama").textContent = j.aciklama;  // içinde SEVA-XXXX var
-      // Sayfanda #orderNo varsa ayrıca doldur (opsiyonel)
-      const orderNoEl = document.getElementById("orderNo");
-      if (orderNoEl && j.order_no) orderNoEl.textContent = j.order_no;
+      // ekrana yaz + localStorage'a kaydet
+      fillPayment(j);
+      localStorage.setItem("seva_last_payment", JSON.stringify(j));
 
       $("#result").style.display = "block";
       $("#ok").style.display = "block";
+      document.getElementById("nextArea").style.display = "flex";
 
-      localStorage.removeItem("seva_cart");
-      if (j.order_no) {
-        setTimeout(()=>{
-          location.href = "success.html?order=" + encodeURIComponent(j.order_no);
-        }, 1500);
-      }
-
-      // (İsteğe bağlı) Sepeti temizle:
-      // localStorage.removeItem(CART_KEY);
+      // otomatik redirect yok!
+      addLeaveGuard(); // sayfadan ayrılma uyarısı aç
     } catch (e) {
       $("#err").textContent = e.message || "Bir hata oluştu.";
     } finally {
@@ -129,7 +140,25 @@
     }
   });
 
+  function fillPayment(j){
+    $("#iban").textContent = j.iban || "-";
+    $("#alici").textContent = j.alici || "-";
+    $("#banka").textContent = j.banka || "-";
+    $("#tutar").textContent = (j.tutar != null ? j.tutar : "-") + (j.tutar!=null ? " ₺" : "");
+    $("#aciklama").textContent = j.aciklama || (j.order_no ? ("SEVA-" + j.order_no) : "-");
 
+    // yazdır butonu
+    document.getElementById("printInfo").onclick = () => window.print();
+
+    // kullanıcı onayladığında success'e geç
+    document.getElementById("didPay").onclick = () => {
+      // uyarıyı kaldırıp yönlendirelim
+      removeLeaveGuard();
+      localStorage.removeItem(CART_KEY);
+      const order = j.order_no ? encodeURIComponent(j.order_no) : "";
+      location.href = "success.html" + (order ? ("?order=" + order) : "");
+    };
+  }
 
   // Kopyala butonları
   document.addEventListener("click", (e)=>{
@@ -144,6 +173,19 @@
       setTimeout(()=>btn.textContent = old || "Kopyala", 1200);
     });
   });
-</script>
+
+  // Sayfadan ayrılma uyarısı (kullanıcı IBAN/açıklamayı kopyalasın diye)
+  let leaveGuard = null;
+  function addLeaveGuard(){
+    if (leaveGuard) return;
+    leaveGuard = (e) => { e.preventDefault(); e.returnValue = ""; };
+    window.addEventListener("beforeunload", leaveGuard);
+  }
+  function removeLeaveGuard(){
+    if (!leaveGuard) return;
+    window.removeEventListener("beforeunload", leaveGuard);
+    leaveGuard = null;
+  }
+  </script>
 </body>
 </html>

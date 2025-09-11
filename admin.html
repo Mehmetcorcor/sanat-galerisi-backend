@@ -32,76 +32,74 @@
   <table id="tbl">
     <thead>
       <tr>
-        <th>Tarih</th>
-        <th>Order No</th>
-        <th>Kullanıcı</th>
-        <th>Tutar</th>
-        <th>Durum</th>
-        <th>Ürünler</th>
-        <th>İşlem</th>
+        <th>Tarih</th><th>Order No</th><th>Kullanıcı</th>
+        <th>Tutar</th><th>Durum</th><th>Ürünler</th><th>İşlem</th>
       </tr>
     </thead>
     <tbody></tbody>
   </table>
 
+  <!-- ÖNCE config -->
+  <script src="config.js"></script>
   <script>
-  const BASE = "http://127.0.0.1:8000";
-  const $ = s => document.querySelector(s);
-  const tbody = $("#tbl tbody");
+    const BASE = (window.SEVA_API_BASE || "").replace(/\/+$/, "");
+    const $ = s => document.querySelector(s);
+    const tbody = $("#tbl tbody");
 
-  $("#loadBtn").onclick = load;
+    document.getElementById("loadBtn").onclick = load;
 
-  async function load(){
-    const key = $("#adminKey").value.trim();
-    if(!key){ alert("Admin key gir."); return; }
-    const r = await fetch(`${BASE}/orders?admin_key=${encodeURIComponent(key)}`);
-    if(!r.ok){ alert("Yetki hatası veya sunucu erişilemedi."); return; }
-    const arr = await r.json();
-    tbody.innerHTML = arr.map(rowToTr).join("") || `<tr><td colspan="7">Kayıt yok.</td></tr>`;
-  }
+    async function load(){
+      const key = $("#adminKey").value.trim();
+      if(!key){ alert("Admin key gir."); return; }
 
-  function rowToTr(o){
-    const items = Array.isArray(o.items) ? o.items : [];
-    const itemsHtml = items.length
-      ? `<pre>${items.map(formatItem).join("\n")}</pre>`
-      : `<span class="muted">—</span>`;
-    const pill = `<span class="pill ${o.status}">${o.status}</span>`;
-    const created = o.created_at ? new Date(o.created_at).toLocaleString("tr-TR") : "-";
-    return `
-      <tr>
-        <td>${created}</td>
-        <td><strong>${o.order_no}</strong><br><span class="muted">SEVA-${o.order_no}</span></td>
-        <td>${o.user_id ?? "-"}</td>
-        <td>${o.amount} ₺</td>
-        <td>${pill}</td>
-        <td>${itemsHtml}</td>
-        <td class="actions">
-          ${actionBtn(o.order_no,"paid","Ödendi")}
-          ${actionBtn(o.order_no,"pending","Beklemede")}
-          ${actionBtn(o.order_no,"cancelled","İptal")}
-        </td>
-      </tr>
-    `;
-  }
-  function formatItem(it){
-    const date = it.date || "-";
-    const time = it.time || "-";
-    const qty = it.qty || 0;
-    const unit = it.unitPrice || 0;
-    const sub = it.subtotal || (qty*unit);
-    return `• ${it.title || it.eventId || "Etkinlik"} | ${date} ${time} | ${qty} adet x ${unit} ₺ = ${sub} ₺`;
-  }
-  function actionBtn(orderNo, status, text){
-    return `<button onclick="updateStatus('${orderNo}','${status}')">${text}</button>`;
-  }
+      const r = await fetch(`${BASE}/orders?admin_key=${encodeURIComponent(key)}`);
+      if(!r.ok){ alert("Yetki hatası veya sunucu erişilemedi."); return; }
+      const arr = await r.json();
+      tbody.innerHTML = arr.map(rowToTr).join("") || `<tr><td colspan="7">Kayıt yok.</td></tr>`;
+    }
 
-  window.updateStatus = async (orderNo, status) => {
-    const key = $("#adminKey").value.trim();
-    if(!key) return alert("Admin key gir.");
-    const r = await fetch(`${BASE}/orders/${orderNo}/status?new_status=${status}&admin_key=${encodeURIComponent(key)}`, {method:"PATCH"});
-    if(!r.ok){ return alert("Güncellenemedi."); }
-    load();
-  };
+    function rowToTr(o){
+      const items = Array.isArray(o.items) ? o.items : [];
+      const itemsHtml = items.length
+        ? `<pre>${items.map(formatItem).join("\n")}</pre>`
+        : `<span class="muted">—</span>`;
+      const pill = `<span class="pill ${o.status}">${o.status}</span>`;
+      const created = o.created_at ? new Date(o.created_at).toLocaleString("tr-TR") : "-";
+      return `
+        <tr>
+          <td>${created}</td>
+          <td><strong>${o.order_no}</strong><br><span class="muted">SEVA-${o.order_no}</span></td>
+          <td>${o.user_id ?? "-"}</td>
+          <td>${o.amount} ₺</td>
+          <td>${pill}</td>
+          <td>${itemsHtml}</td>
+          <td class="actions">
+            ${actionBtn(o.order_no,"paid","Ödendi")}
+            ${actionBtn(o.order_no,"pending","Beklemede")}
+            ${actionBtn(o.order_no,"cancelled","İptal")}
+          </td>
+        </tr>
+      `;
+    }
+    function formatItem(it){
+      const date = it.date || "-";
+      const time = it.time || "-";
+      const qty = it.qty || 0;
+      const unit = it.unitPrice || 0;
+      const sub = it.subtotal || (qty*unit);
+      return `• ${it.title || it.eventId || "Etkinlik"} | ${date} ${time} | ${qty} adet x ${unit} ₺ = ${sub} ₺`;
+    }
+    function actionBtn(orderNo, status, text){
+      return `<button onclick="updateStatus('${orderNo}','${status}')">${text}</button>`;
+    }
+
+    window.updateStatus = async (orderNo, status) => {
+      const key = $("#adminKey").value.trim();
+      if(!key) return alert("Admin key gir.");
+      const r = await fetch(`${BASE}/orders/${orderNo}/status?new_status=${status}&admin_key=${encodeURIComponent(key)}`, {method:"PATCH"});
+      if(!r.ok){ return alert("Güncellenemedi."); }
+      load();
+    };
   </script>
 </body>
 </html>

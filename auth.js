@@ -1,5 +1,5 @@
-// === Basit yardımcılar ===
-const BASE = "http://127.0.0.1:8000"; // FastAPI adresin
+// auth.js
+const BASE = (window.SEVA_API_BASE || "").replace(/\/+$/, "");
 const $ = (s) => document.querySelector(s);
 const setMsg = (el, text, ok=false) => {
   if (!el) return;
@@ -7,7 +7,7 @@ const setMsg = (el, text, ok=false) => {
   el.className = "auth-msg " + (ok ? "ok" : "err");
 };
 
-// === Sekme geçişleri (Giriş / Kayıt) ===
+// Sekme geçişi
 (() => {
   const tabs  = document.querySelectorAll(".auth-tab");
   const panes = document.querySelectorAll(".auth-pane");
@@ -21,12 +21,12 @@ const setMsg = (el, text, ok=false) => {
   });
 })();
 
-// === Kayıt ===
+// Kayıt
 $("#regBtn")?.addEventListener("click", async () => {
   const email = $("#regEmail")?.value.trim();
   const password = $("#regPassword")?.value.trim();
   const msg = $("#regMsg");
-  setMsg(msg, ""); // temizle
+  setMsg(msg, "");
 
   if (!email || !password) return setMsg(msg, "E-posta ve şifre zorunlu.");
   if (password.length < 6)   return setMsg(msg, "Şifre en az 6 karakter olmalı.");
@@ -39,19 +39,17 @@ $("#regBtn")?.addEventListener("click", async () => {
       body
     });
     const j = await r.json().catch(() => ({}));
-
     if (!r.ok) return setMsg(msg, j.detail || "Kayıt başarısız.");
 
     setMsg(msg, "Kayıt başarılı. Şimdi giriş yapabilirsin.", true);
-    // İstersen otomatik olarak Giriş sekmesine geç:
     document.querySelector('[data-tab="login"]')?.click();
-    $("#logEmail") && ($("#logEmail").value = email);
-  } catch (e) {
-    setMsg(msg, "Ağ hatası. Daha sonra tekrar deneyin.");
+    if ($("#logEmail")) $("#logEmail").value = email;
+  } catch {
+    setMsg(msg, "Ağ hatası. Daha sonra deneyin.");
   }
 });
 
-// === Giriş ===
+// Giriş
 $("#logBtn")?.addEventListener("click", async () => {
   const email = $("#logEmail")?.value.trim();
   const password = $("#logPassword")?.value.trim();
@@ -68,19 +66,12 @@ $("#logBtn")?.addEventListener("click", async () => {
       body
     });
     const j = await r.json().catch(() => ({}));
+    if (!r.ok || !j.access_token) return setMsg(msg, j.detail || "Giriş başarısız.");
 
-    if (!r.ok || !j.access_token) {
-      return setMsg(msg, j.detail || "Giriş başarısız.");
-    }
-
-    // Token sakla ve yönlendir
     localStorage.setItem("token", j.access_token);
     setMsg(msg, "Giriş başarılı! Yönlendiriliyorsunuz…", true);
-    setTimeout(() => {
-      // girişten sonra gideceğin sayfa:
-      window.location.href = "workshop.html"; // istersen index.html yap
-    }, 600);
-  } catch (e) {
-    setMsg(msg, "Ağ hatası. Daha sonra tekrar deneyin.");
+    setTimeout(()=>{ window.location.href = "workshop.html"; }, 600);
+  } catch {
+    setMsg(msg, "Ağ hatası. Daha sonra deneyin.");
   }
 });

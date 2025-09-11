@@ -18,9 +18,9 @@ render_url = os.getenv("RENDER_EXTERNAL_URL")
 origins = [
     "https://sevastudio.com",
     "https://www.sevastudio.com",
+    "http://localhost:5500",
+    "http://127.0.0.1:5500",
 ]
-if render_url:
-    origins.append(render_url)
 
 app.add_middleware(
     CORSMiddleware,

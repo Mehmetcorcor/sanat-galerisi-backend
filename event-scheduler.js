@@ -1,6 +1,7 @@
 // js/event-scheduler.js
 (() => {
-  const BASE = "http://127.0.0.1:8000";
+  // Backend tabanı: önce global değişken (opsiyonel), yoksa Render URL
+  const BASE = (window.SEVA_API_BASE || "https://sanat-galerisi-backend.onrender.com").replace(/\/+$/,"");
   const getToken = () => localStorage.getItem("token");
 
   // sayfadaki tüm bilet butonlarını yakala (tek sefer bağla)
@@ -14,14 +15,11 @@
   });
 
   async function openInlineScheduler(triggerEl) {
-    // aynı butona ait panel açık ise kapat (toggle)
     const next = triggerEl.nextElementSibling;
     if (next && next.classList?.contains("ag-sched")) {
-      next.remove();
-      return;
+      next.remove(); return;
     }
 
-    // panel
     const wrap = document.createElement("div");
     wrap.className = "ag-sched";
     wrap.innerHTML = `
@@ -31,18 +29,9 @@
       </div>
 
       <div class="ag-grid">
-        <div>
-          <label>Tarih</label><br/>
-          <select id="agDate"></select>
-        </div>
-        <div>
-          <label>Saat</label><br/>
-          <select id="agTime"></select>
-        </div>
-        <div class="ag-qty">
-          <label>Adet</label>
-          <input id="agQty" type="number" min="1" step="1" value="1"/>
-        </div>
+        <div><label>Tarih</label><br/><select id="agDate"></select></div>
+        <div><label>Saat</label><br/><select id="agTime"></select></div>
+        <div class="ag-qty"><label>Adet</label><input id="agQty" type="number" min="1" step="1" value="1"/></div>
         <div class="ag-price" id="agPrice">—</div>
       </div>
 
@@ -53,31 +42,25 @@
       <div class="ag-err" id="agErr"></div>
       <div class="ag-sub">Sepete eklendikten sonra “Sepetim” sayfasından ödeme adımına geçebilirsiniz.</div>
     `;
-    // butonun hemen altına yerleştir
     triggerEl.insertAdjacentElement("afterend", wrap);
 
-    // elemanlar
     const el = {
       date: wrap.querySelector("#agDate"),
       time: wrap.querySelector("#agTime"),
-      qty: wrap.querySelector("#agQty"),
-      price: wrap.querySelector("#agPrice"),
-      add: wrap.querySelector("#agAdd"),
-      cancel: wrap.querySelector("#agCancel"),
-      err: wrap.querySelector("#agErr"),
+      qty:  wrap.querySelector("#agQty"),
+      price:wrap.querySelector("#agPrice"),
+      add:  wrap.querySelector("#agAdd"),
+      cancel:wrap.querySelector("#agCancel"),
+      err:  wrap.querySelector("#agErr"),
     };
 
     const eventId = triggerEl.getAttribute("data-event-id");
     if (!eventId) { el.err.textContent = "Etkinlik ID bulunamadı."; return; }
 
-    // seansları çek
     const sessions = await loadSessions(eventId);
-
-    // gün & saat doldur
     fillDates(el.date, sessions);
     fillTimes(el.time, sessions, el.date.value);
 
-    // fiyat hesaplayıcı (adet/saat/gün değişince tetiklenecek)
     const recalc = () => {
       const qty = Math.max(1, parseInt(el.qty.value || "1", 10));
       const sel = findSelection(sessions, el.date.value, el.time.value);
@@ -85,18 +68,11 @@
       el.price.textContent = money(unit * qty);
     };
 
-    // eventler
-    el.date.addEventListener("change", () => {
-      fillTimes(el.time, sessions, el.date.value);
-      recalc();
-    });
+    el.date.addEventListener("change", () => { fillTimes(el.time, sessions, el.date.value); recalc(); });
     el.time.addEventListener("change", recalc);
     el.qty.addEventListener("input", recalc);
-
-    // ilk hesap
     recalc();
 
-    // Sepete ekle
     el.add.addEventListener("click", async () => {
       el.err.textContent = "";
       try {
@@ -104,7 +80,6 @@
         const sel = findSelection(sessions, el.date.value, el.time.value);
         if (!sel) throw new Error("Lütfen gün ve saat seçiniz.");
 
-        // BACKEND: form-encoded
         await addToCartForm({
           event_id: sel.event_id,
           session_id: sel.session_id,
@@ -113,7 +88,6 @@
           qty: String(qty),
         });
 
-        // LOCAL STORAGE: sepet sayfası için
         const CART_KEY = "seva_cart";
         const current = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
         const item = {
@@ -121,7 +95,7 @@
           title: triggerEl.dataset.eventTitle || "Etkinlik",
           date: sel.date,
           time: sel.timeObj.time,
-          qty: qty,
+          qty,
           unitPrice: sel.timeObj.price || 0,
           subtotal: (sel.timeObj.price || 0) * qty
         };
@@ -145,9 +119,9 @@
       const r = await fetch(`${BASE}/events/${encodeURIComponent(eventId)}/sessions`);
       if (!r.ok) throw new Error("Oturumlar yüklenemedi");
       const data = await r.json();
-      return data.map((d) => ({ ...d, event_id: eventId })); // backend event_id göndermiyorsa
+      return data.map((d) => ({ ...d, event_id: eventId }));
     } catch {
-      // Demo fallback (backend kapalıysa)
+      // Backend erişilemezse demo
       return [
         { event_id: eventId, session_id: "S-12-1", date: "2025-09-12",
           times: [{ time: "14:00", price: 350, stock: 40, key: "S-12-1-1400" },
@@ -174,7 +148,7 @@
     const s = sessions.find((x) => x.date === dateVal);
     (s?.times || []).forEach((t) => {
       const o = document.createElement("option");
-      o.value = t.key || t.time; // findSelection ikisini de destekliyor
+      o.value = t.key || t.time;
       o.textContent = `${t.time}${t.stock != null ? ` (Kalan: ${t.stock})` : ""}`;
       o.dataset.price = t.price ?? "";
       selectEl.appendChild(o);
@@ -182,12 +156,6 @@
     if (!selectEl.value && selectEl.firstChild) {
       selectEl.value = selectEl.firstChild.value;
     }
-  }
-
-  function updatePrice(el, sessions, dateVal, timeKey) {
-    const sel = findSelection(sessions, dateVal, timeKey);
-    const price = sel?.timeObj?.price;
-    el.textContent = price != null ? `${price} ₺` : "—";
   }
 
   function findSelection(sessions, dateVal, timeKeyOrVal) {
@@ -198,25 +166,16 @@
     return { event_id: s.event_id, session_id: s.session_id, date: s.date, timeObj };
   }
 
-  // form-encoded gönderim — FastAPI form parametreleri ile uyumlu
   async function addToCartForm(payload) {
     const params = new URLSearchParams(payload);
     const headers = { "Content-Type": "application/x-www-form-urlencoded" };
     const token = getToken();
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
-    const r = await fetch(`${BASE}/cart/items`, {
-      method: "POST",
-      headers,
-      body: params,
-    });
-
+    const r = await fetch(`${BASE}/cart/items`, { method: "POST", headers, body: params });
     if (!r.ok) {
       let msg = "Sepete eklenemedi";
-      try {
-        const j = await r.json();
-        msg = j?.detail || JSON.stringify(j);
-      } catch {}
+      try { const j = await r.json(); msg = j?.detail || JSON.stringify(j); } catch {}
       throw new Error(msg);
     }
     return r.json();
@@ -228,7 +187,5 @@
     return `${d} ${months[m - 1]} ${y}`;
   }
 
-  function money(n) {
-    return Number(n || 0).toLocaleString("tr-TR") + " ₺";
-  }
+  function money(n) { return Number(n || 0).toLocaleString("tr-TR") + " ₺"; }
 })();

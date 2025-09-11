@@ -18,7 +18,7 @@ function sendMessage() {
     if (message.toLowerCase().includes("açık")) {
         response = "Galeri Pazartesi Günleri hariç ,haftanın her günü 12:00 - 20:00 arası açık.";
     } else if (message.toLowerCase().includes("bilet")) {
-        response = "Workshop linki üzerinden ilgili workshopa bilet alabilirsiniz.";
+        response = "etkinlik linki üzerinden ilgili etkinliklere bilet alabilirsiniz.";
     } else if (message.toLowerCase().includes("atölye")) {
         response = "Atölye kayıtları için 'workshop.html' sayfamıza göz atabilirsin.";
     } else if (message.toLowerCase().includes("merhaba")) {

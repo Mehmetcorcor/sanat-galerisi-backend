@@ -11,7 +11,7 @@ EVENT_SESSIONS = {
             "date": "2025-09-7",
             "times": [
                 {"time": "13:00", "price": 800, "stock": 12, "key": "SM-12-1-1400"},
-                {"time": "15:00", "price": 800, "stock": 10, "key": "SM-12-1-1800"},
+                {"time": "18:00", "price": 800, "stock": 10, "key": "SM-12-1-1800"},
             ],
         },
         {
@@ -44,7 +44,7 @@ EVENT_SESSIONS = {
     "mum-atolyesi": [
         {
             "session_id": "M-14-1",
-            "date": "2025-09-28",
+            "date": "2025-09-14",
             "times": [
                 {"time": "13:00", "price": 800, "stock": 20, "key": "M-14-1-1500"},
                 {"time": "18:00", "price": 800, "stock": 15, "key": "M-14-1-1800"},
@@ -52,10 +52,18 @@ EVENT_SESSIONS = {
         },
         {
             "session_id": "M-21-1",
-            "date": "2025-09-28",
+            "date": "2025-09-20",
             "times": [
                 {"time": "18:00", "price": 800, "stock": 20, "key": "M-21-1-1200"},
                 {"time": "20:00", "price": 800, "stock": 15, "key": "M-21-1-1600"},
+            ],
+        },
+        {
+            "session_id": "M-14-1",
+            "date": "2025-09-26",
+            "times": [
+                {"time": "13:00", "price": 800, "stock": 20, "key": "M-14-1-1500"},
+                {"time": "18:00", "price": 800, "stock": 15, "key": "M-14-1-1800"},
             ],
         },
     ],
@@ -146,6 +154,74 @@ EVENT_SESSIONS = {
             "times": [
                 {"time": "18:00", "price": 800, "stock": 20, "key": "A-26-1-1200"},
                 {"time": "20:00", "price": 800, "stock": 18, "key": "A-26-1-1500"},
+            ],
+        },
+    ],
+    "seramik-kurs": [
+        {
+            "session_id": "A-19-1",
+            "date": "2025-09-8",
+            "times": [
+                {"time": "18:00", "price": 3500, "stock": 20, "key": "A-19-1-1300"},
+                {"time": "20:00", "price": 3500, "stock": 18, "key": "A-19-1-1600"},
+            ],
+        },
+        {
+            "session_id": "A-26-1",
+            "date": "2025-09-9",
+            "times": [
+                {"time": "18:00", "price": 3500, "stock": 20, "key": "A-26-1-1200"},
+                {"time": "20:00", "price": 3500, "stock": 18, "key": "A-26-1-1500"},
+            ],
+        },
+        {
+            "session_id": "A-26-1",
+            "date": "2025-09-15",
+            "times": [
+                {"time": "18:00", "price": 3500, "stock": 20, "key": "A-26-1-1200"},
+                {"time": "20:00", "price": 3500, "stock": 18, "key": "A-26-1-1500"},
+            ],
+        },
+        {
+            "session_id": "A-26-1",
+            "date": "2025-09-16",
+            "times": [
+                {"time": "18:00", "price": 3500, "stock": 20, "key": "A-26-1-1200"},
+                {"time": "20:00", "price": 3500, "stock": 18, "key": "A-26-1-1500"},
+            ],
+        },
+    ],
+    "resim-kurs": [
+        {
+            "session_id": "A-19-1",
+            "date": "2025-09-4",
+            "times": [
+                {"time": "18:00", "price": 3500, "stock": 20, "key": "A-19-1-1300"},
+                {"time": "20:00", "price": 3500, "stock": 18, "key": "A-19-1-1600"},
+            ],
+        },
+        {
+            "session_id": "A-26-1",
+            "date": "2025-09-11",
+            "times": [
+                {"time": "18:00", "price": 3500, "stock": 20, "key": "A-26-1-1200"},
+                {"time": "20:00", "price": 3500, "stock": 18, "key": "A-26-1-1500"},
+            ],
+        },
+        {
+            "session_id": "A-26-1",
+            "date": "2025-09-18",
+            "times": [
+                {"time": "18:00", "price": 3500, "stock": 20, "key": "A-26-1-1200"},
+                {"time": "20:00", "price": 3500, "stock": 18, "key": "A-26-1-1500"},
+            ],
+        },
+        {
+            "session_id": "A-26-1",
+            "date": "2025-09-25",
+            "times": [
+                {"time": "18:00", "price": 3500, "stock": 20, "key": "A-26-1-1200"},
+                {"time": "20:00", "price": 3500, "stock": 18, "key": "A-26-1-1500"},
             ],
         },
     ],

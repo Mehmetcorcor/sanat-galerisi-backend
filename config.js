@@ -1,0 +1,1 @@
+window.SEVA_API_BASE = "https://sanat-galerisi-backend.onrender.com";
