@@ -1,379 +1,183 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="seramikkurs.css">
-    <link rel="stylesheet" href="auth.css">
-    <title>Kurslar Sayfası</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kurslar Sayfası</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="seramikkurs.css">
+  <link rel="stylesheet" href="auth.css">
 </head>
 <body>
-    <!---BAŞLIK BÖLÜMÜ|HEADER SECTİON-->
-    <header class="header">
-        <a href="index.html" class="logo">
-            <img src="resimler/logo_transparent.png" alt="SEVA Studio Logo"></a>
-        <button class="menu-toggle" id="menu-toggle">&#9776;</button>
-        <nav class="navbar" id="navbar">
-            <ul>
-                <li><a href="workshop.html">Etkinlikler</a></li>
-                <li><a href="seramikkurs.html">Kurslar</a></li>
-                <li><a href="hakkimizda.html">Hakkımızda</a></li>
-                <li><a href="#">Ürünlerimiz</a></li>
-                <li>
-                   <a href="cart.html">Sepetim <span id="navCartCount" style="font-weight: 700">0</span> 🛒</a>
-                </li>
-                <li><a id="navAuthLink" href="auth.html">Giriş|Kayıt</a></li>
-                <li><a  id="navLogout" href="#" style="display: none">Çıkış</a></li>
-            </ul>
-        </nav>
-    </header>
-    <!---BAŞLIK BÖLÜMÜ SON|HEADER SECTİON END-->
-    <!---FİLM GALERİSİ BÖLÜMÜ|GALERRY SECTİON-->
-     <section class="event-calendar">
-        <img src="resimler/seramikkurstakvim.PNG" alt="Etkinlik takvimi">
-    </section>
-    
-    <section class="kurslar">
-  <div class="kurs-container">
-    <h2 class="kurs-baslik">Kurs Bilgileri</h2>
-    
-    <div class="kurs-detay">
-      <h3>Tarih</h3>
-      <p>8,9,15,16 Eylül 2025</p>
+  <!-- HEADER -->
+  <header class="header">
+    <a href="index.html" class="logo">
+      <img src="resimler/logo_transparent.png" alt="SEVA Studio Logo">
+    </a>
+    <button class="menu-toggle" id="menu-toggle">&#9776;</button>
+    <nav class="navbar" id="navbar">
+      <ul>
+        <li><a href="workshop.html">Etkinlikler</a></li>
+        <li><a href="seramikkurs.html">Kurslar</a></li>
+        <li><a href="hakkimizda.html">Hakkımızda</a></li>
+        <li><a href="#">Ürünlerimiz</a></li>
+        <li><a href="cart.html">Sepetim <span id="navCartCount" style="font-weight:700">0</span> 🛒</a></li>
+        <li><a id="navAuthLink" href="auth.html">Giriş / Kayıt</a></li>
+        <li><a id="navLogout" href="#" style="display:none">Çıkış</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- TAKVİM GÖRSELİ -->
+  <section class="event-calendar">
+    <img src="resimler/seramikkurstakvim.PNG" alt="Etkinlik takvimi">
+  </section>
+
+  <!-- SERAMİK KURS KARTI -->
+  <section class="kurslar">
+    <div class="kurs-container">
+      <h2 class="kurs-baslik">Kurs Bilgileri</h2>
+
+      <div class="kurs-detay">
+        <h3>Tarih</h3>
+        <p>8, 9, 15, 16 Eylül 2025</p>
+      </div>
+      <hr>
+      <div class="kurs-detay">
+        <h3>Ders Sayısı</h3>
+        <p>4</p>
+      </div>
+      <hr>
+      <div class="kurs-detay">
+        <h3>Saat</h3>
+        <p>18:00 - 20:00</p>
+      </div>
+      <hr>
+      <div class="kurs-detay">
+        <h3>Seviye</h3>
+        <p>Başlangıç ve Orta Seviye</p>
+      </div>
+
+      <div class="kurs-aciklama">
+        <p>
+          Seramik serüvenine katıl, kendi özgün parçanı üret! <br>
+          Eylül ayında başlayacak olan 4 derslik seramik kursumuzda temel tekniklerden sırlamaya uzanan keyifli bir süreç seni bekliyor.
+          Kurs boyunca hem şekillendirme hem de sırlama tekniklerini öğrenecek, farklı formlar deneyerek kendi parçanı üreteceksin. <br>
+          <strong>+Kursa özel avantajlar:</strong><br>
+          - Aylık kursa katılan herkes seramik boyama, 2 kit ve tek kit seramik etkinliklerinde %30 indirim kazanır!<br>
+          Kontenjan sınırlı, elini çabuk tut!
+        </p>
+      </div>
     </div>
-    
-    <hr>
-    
-    <div class="kurs-detay">
-      <h3>Ders Sayısı</h3>
-      <p>4</p>
+  </section>
+
+  <!-- SERAMİK KURS BİLET -->
+  <section class="ticket">
+    <a
+      href="#"
+      class="ticket-button add-to-cart"
+      data-schedule-btn
+      data-event-id="seramik-kurs"
+      data-event-title="Seramik 4 Ders | Tek Seçim"
+      data-default-price="3500"
+    >KATILMAK İÇİN BİLET AL</a>
+    <div id="scheduleBoxSeramik" class="schedule-box" style="display:none;"></div>
+  </section>
+
+  <!-- RESİM KURS TAKVİM -->
+  <section class="event-calendar">
+    <img src="resimler/resimkursutakvim.PNG" alt="Etkinlik takvimi">
+  </section>
+
+  <!-- RESİM KURS KARTI -->
+  <section class="kurslar">
+    <div class="kurs-container">
+      <h2 class="kurs-baslik">Kurs Bilgileri</h2>
+
+      <div class="kurs-detay">
+        <h3>Tarih</h3>
+        <p>4, 11, 18, 25 Eylül 2025</p>
+      </div>
+      <hr>
+      <div class="kurs-detay">
+        <h3>Ders Sayısı</h3>
+        <p>4</p>
+      </div>
+      <hr>
+      <div class="kurs-detay">
+        <h3>Saat</h3>
+        <p>18:00 - 20:00</p>
+      </div>
+      <hr>
+      <div class="kurs-detay">
+        <h3>Seviye</h3>
+        <p>Başlangıç ve Orta Seviye</p>
+      </div>
+
+      <div class="kurs-aciklama">
+        <p>
+          Renklerin ve hayal gücünün birleştiği bu atölyede sen de bizimle ol! <br>
+          4 derslik resim kursumuzda temel çizim tekniklerinden renklendirmeye uzanan keyifli bir yolculuğa çıkıyoruz. <br>
+          <strong>+Kursa özel avantajlar:</strong><br>
+          - Aylık kursa katılan herkes tek seferlik resim etkinliklerinde %30 indirim kazanır! <br>
+          Kontenjan sınırlı, elini çabuk tut!
+        </p>
+      </div>
     </div>
-    
-    <hr>
-    
-    <div class="kurs-detay">
-      <h3>Saat</h3>
-      <p>18:00 - 20:00</p>
+  </section>
+
+  <!-- RESİM KURS BİLET -->
+  <section class="ticket">
+    <a
+      href="#"
+      class="ticket-button add-to-cart"
+      data-schedule-btn
+      data-event-id="resim-kurs"
+      data-event-title="Resim 4 Ders | Tek Seçim"
+      data-default-price="3500"
+    >KATILMAK İÇİN BİLET AL</a>
+    <div id="scheduleBoxResim" class="schedule-box" style="display:none;"></div>
+  </section>
+
+  <!-- CHAT -->
+  <button class="chat-toggle" onclick="toggleChat()">💬</button>
+  <div class="chatbox" id="chatbox" style="display:none;">
+    <div class="chat-header">
+      Yapay Zeka SEVA🎨
+      <span class="close-btn" onclick="toggleChat()">✖</span>
     </div>
-    
-    <hr>
-    
-    <div class="kurs-detay">
-      <h3>Seviye</h3>
-      <p>Başlangıç ve Orta Seviye</p>
+    <div class="chatlogs" id="chatlogs">
+      <div class="bot">Merhaba! Sana nasıl yardımcı olabilirim?</div>
     </div>
-    
-    <div class="kurs-aciklama">
-      <p>
-        Seramik serüvenine katıl, kendi özgün parçanı üret! <br> Hayalindeki formu kendi ellerinle şekillendirmek ister misin?  Eylül ayında başlayacak olan 4 derslik seramik kursumuzda temel tekniklerden sırlamaya uzanan keyifli bir süreç seni bekliyor. Kurs boyunca hem şekillendirme hem de sırlama tekniklerini öğrenecek, farklı formlar deneyecek ve kendi özgün  parçanı üreteceksin. <br>
-        +Kursa özel avantajlar: <br> -Aylık kursa katılan herkes seramik boyama, 2 kit ve tek kit seramik etkinliklerin %30 indirim kazanıyor! <br> Kontenjan sınırlı, elini çabuk tut!
-      </p>
-    </div>
+    <input type="text" id="userInput" placeholder="Bir şeyler yaz..." onkeydown="if(event.key==='Enter'){sendMessage()}">
   </div>
-</section>
-    <section class="ticket">
-      <!-- Eski: <a href="biletal.html" ...> -->
-      <a
-        href="#"
-        class="ticket-button add-to-cart"
-        data-schedule-btn
-        data-event-id="seramik-kurs"
-        data-event-title="Seramik 4 Ders| Resim 4 Ders | Tek Seçim"
-        data-default-price="3500"
-      >KATILMAK İÇİN BİLET AL</a>
 
-      <div id="scheduleBox" class="schedule-box" style="display: none;"></div>
-    </section>
-    <!--BİLET AL BUTONU SON|TİCKET BUTTON END-->
-
-<section class="event-calendar">
-        <img src="resimler/resimkursutakvim.PNG" alt="Etkinlik takvimi">
-    </section>
-    
-    <section class="kurslar">
-  <div class="kurs-container">
-    <h2 class="kurs-baslik">Kurs Bilgileri</h2>
-    
-    <div class="kurs-detay">
-      <h3>Tarih</h3>
-      <p>4,11,18,25 Eylül 2025</p>
-    </div>
-    
-    <hr>
-    
-    <div class="kurs-detay">
-      <h3>Ders Sayısı</h3>
-      <p>4</p>
-    </div>
-    
-    <hr>
-    
-    <div class="kurs-detay">
-      <h3>Saat</h3>
-      <p>18:00 - 20:00</p>
-    </div>
-    
-    <hr>
-    
-    <div class="kurs-detay">
-      <h3>Seviye</h3>
-      <p>Başlangıç ve Orta Seviye</p>
-    </div>
-    
-    <div class="kurs-aciklama">
-      <p>
-        Renklerin , çizgilerin ve hayal gücünün birleştiği bu atölyede sen de bizimle ol! <br> Hayalindeki sahneleri kağıda ve tuvale dökmeye hazır mısın?  Eylül ayında  başlayacak olan 4 derslik resim kursumuzda temel çizim  tekniklerinden form çalışmalarına, boyut ve atmosfer kazandırma tekniklerinden renklendirmeye uzanan keyifli bir yolculuğa çıkıyoruz. <br>
-        Fırçaya ilk kez dokunanlar da kendini geliştirmek isteyenler de bu atölyeye katılabilir, kişisel tarzınızı yakalayabilirsiniz.<br> 
-        +Kursa özel avantajlar: <br>-Aylık kursa katılan herkes tek seferlik resim etkinliklerinde %30 indirim kazanıyor!  <br> Kontenjan sınırlı, elini çabuk tut!
-      </p>
-    </div>
-  </div>
-</section>
-
-    <!--BİLET AL BUTONU|TİCKET BUTTON-->
-    <section class="ticket">
-      <!-- Eski: <a href="biletal.html" ...> -->
-      <a
-        href="#"
-        class="ticket-button add-to-cart"
-        data-schedule-btn
-        data-event-id="kurslar"
-        data-event-title="resim-kurs"
-        data-default-price="3500"
-      >KATILMAK İÇİN BİLET AL</a>
-
-      <div id="scheduleBox" class="schedule-box" style="display: none;"></div>
-    </section>
-    <!--BİLET AL BUTONU SON|TİCKET BUTTON END-->
-
-
-    <button class="chat-toggle" onclick="toggleChat()">💬</button>
-
-    <div class="chatbox" id="chatbox" style="display: none;">
-        <div class="chat-header">
-            Yapay Zeka SEVA🎨
-            <span class="close-btn" onclick="toggleChat()">✖</span>
-        </div>
-        <div class="chatlogs" id="chatlogs">
-            <div class="bot">Merhaba! Sana nasıl yardımcı olabilirim?</div>
-        </div>
-        <input type="text" id="userInput" placeholder="Bir şeyler yaz..." onkeydown="if(event.key==='Enter'){sendMessage()}">
-    </div>
-
-    <footer class="footer">
-      <div class="footer-container">
-       <div class="footer-left">
-         <h2>SEVA STUDIO&STORE</h2>
-       </div>
-      
-       <div class="footer-center">
-         <a href="https://maps.apple.com/place?address=Abdulkerim%20%C3%87evik%20Cd.%208,%2013200%20Tatvan%20Bitlis,%20T%C3%BCrkiye&coordinate=38.497033,42.283696&name=Seva%20Studio%20%26%20Store&place-id=IF25B009F55AB5544&map=h" 
-             target="_blank" rel="noopener noreferrer">
-            Konumu Gör
-         <p>&copy; 2025 SEVA Tüm hakları saklıdır.</p>
-          <p>HELEN Software</p>
-       </div>
-      
-       <div class="footer-right">
-         <a href="#"><i class="fab fa-facebook-f"></i></a>
-         <a href="https://wa.me/905386188297" target="_blank"><i class="fab fa-whatsapp"></i></a>
-         <a href="https://www.instagram.com/seva.studio.store/"><i class="fab fa-instagram"></i></a>
-       </div>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <h2>SEVA STUDIO&STORE</h2>
       </div>
-    </footer>
-    <script src="config.js"></script>
-    <script src="chat.js"></script>
-    <script src="hamburger.js"></script>
-    <script src="nav.js"></script>
-    <script>
-(() => {
-  const BASE = "http://127.0.0.1:8000"; // FastAPI
-  const getToken = () => localStorage.getItem("token");
-  const btn = document.querySelector("[data-schedule-btn]") || document.querySelector(".ticket .add-to-cart");
-  if (!btn) return;
-
-  // ETKİNLİK ID'sini düzelt (yazım hatası)
-  if (btn.getAttribute("data-event-id") === "mirror-ateiler-001") {
-    btn.setAttribute("data-event-id", "mirror-atelier-001");
-  }
-
-  if (!btn._agBound) {
-    btn._agBound = true;
-    btn.addEventListener("click", async (e) => {
-      e.preventDefault();
-
-      // Giriş kontrolü
-      const token = getToken();
-      if (!token) {
-        alert("Sepete eklemek için lütfen önce giriş yapın.");
-        location.href = "auth.html";
-        return;
-      }
-
-      await openInlineScheduler(btn);
-    });
-  }
-
-  async function openInlineScheduler(triggerEl){
-    const existing = triggerEl.nextElementSibling;
-    if (existing && existing.classList?.contains("ag-sched")) { existing.remove(); return; }
-
-    const wrap = document.createElement("div");
-    wrap.className = "ag-sched";
-    wrap.style.cssText = "margin-top:12px;padding:12px;border:1px solid #eee;border-radius:10px;background:#fff;box-shadow:0 4px 18px rgba(0,0,0,.04)";
-    wrap.innerHTML = `
-      <h4 style="margin:0 0 8px">Etkinlik gününü ve saati seç</h4>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
-        <select id="agDate" style="padding:8px;border-radius:8px;"></select>
-        <select id="agTime" style="padding:8px;border-radius:8px;"></select>
-        <input id="agQty" type="number" min="1" step="1" value="1" style="width:90px;padding:8px;border-radius:8px;">
-        <strong id="agPrice" style="align-self:center">—</strong>
+      <div class="footer-center">
+        <a href="https://maps.apple.com/place?address=Abdulkerim%20%C3%87evik%20Cd.%208,%2013200%20Tatvan%20Bitlis,%20T%C3%BCrkiye&coordinate=38.497033,42.283696&name=Seva%20Studio%20%26%20Store&place-id=IF25B009F55AB5544&map=h"
+           target="_blank" rel="noopener noreferrer">Konumu Gör</a>
+        <p>&copy; 2025 SEVA Tüm hakları saklıdır.</p>
+        <p>HELEN Software</p>
       </div>
-      <div style="display:flex;gap:8px">
-        <button id="agAdd" style="padding:10px 14px;border:none;border-radius:10px;background:#8B4513;color:#fff;font-weight:600">Sepete Ekle</button>
-        <button id="agCancel" type="button" style="padding:10px 14px;border:1px solid #ddd;border-radius:10px;background:#f7f7f7">Vazgeç</button>
-        <span id="agErr" style="color:#b00020;margin-left:8px;align-self:center"></span>
+      <div class="footer-right">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://wa.me/905386188297" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://www.instagram.com/seva.studio.store/"><i class="fab fa-instagram"></i></a>
       </div>
-    `;
-    triggerEl.insertAdjacentElement("afterend", wrap);
+    </div>
+  </footer>
 
-    const el = {
-      date: wrap.querySelector("#agDate"),
-      time: wrap.querySelector("#agTime"),
-      qty:  wrap.querySelector("#agQty"),
-      price:wrap.querySelector("#agPrice"),
-      add:  wrap.querySelector("#agAdd"),
-      cancel: wrap.querySelector("#agCancel"),
-      err:  wrap.querySelector("#agErr"),
-    };
-
-    const eventId = triggerEl.getAttribute("data-event-id") || "mirror-atelier-001";
-    const title   = triggerEl.getAttribute("data-event-title") || "Ayna Boyama Etkinliği";
-
-    const sessions = await loadSessions(eventId);
-    fillDates(el.date, sessions);
-    fillTimes(el.time, sessions, el.date.value);
-    updatePrice(el.price, sessions, el.date.value, el.time.value);
-
-    el.date.addEventListener("change", () => {
-      fillTimes(el.time, sessions, el.date.value);
-      updatePrice(el.price, sessions, el.date.value, el.time.value);
-    });
-    el.time.addEventListener("change", () => updatePrice(el.price, sessions, el.date.value, el.time.value));
-
-    el.add.addEventListener("click", async () => {
-      try {
-        const qty = Math.max(1, parseInt(el.qty.value || "1", 10));
-        const sel = findSelection(sessions, el.date.value, el.time.value);
-        if (!sel) throw new Error("Lütfen gün ve saat seçiniz.");
-
-        await addToCartForm({
-          event_id: eventId,
-          session_id: sel.session_id,
-          date: sel.date,
-          time: sel.timeObj.time,
-          qty
-        });
-
-        // localStorage tarafı (frontend sepeti) – istersen cart.html'de göstermek için
-        const CART_KEY = "seva_cart";
-        const items = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
-        items.push({
-          eventId, title,
-          date: sel.date, time: sel.timeObj.time,
-          unitPrice: sel.timeObj.price, qty,
-          subtotal: qty * (sel.timeObj.price || 0)
-        });
-        localStorage.setItem(CART_KEY, JSON.stringify(items));
-
-        wrap.remove();
-        window.location.href = "cart.html";
-      } catch (err) {
-        el.err.textContent = err?.message || "Sepete eklenemedi.";
-      }
-    });
-
-    el.cancel.addEventListener("click", () => wrap.remove());
-    wrap.scrollIntoView({behavior:"smooth", block:"center"});
-  }
-
-  // ---- helpers ----
-  async function loadSessions(eventId){
-    try {
-      const r = await fetch(`${BASE}/events/${eventId}/sessions`);
-      if (!r.ok) throw 0;
-      const data = await r.json();
-      return data.map(d => ({...d, event_id: eventId}));
-    } catch {
-      // Geliştirme amaçlı fallback (backend erişilemezse)
-      return [
-        { event_id: eventId, session_id: "S-12-1", date: "2025-09-12",
-          times: [{time:"14:00", price:350, stock:40, key:"S-12-1-1400"}, {time:"18:00", price:450, stock:25, key:"S-12-1-1800"}]
-        },
-        { event_id: eventId, session_id: "S-18-1", date: "2025-09-18",
-          times: [{time:"14:00", price:350, stock:40, key:"S-18-1-1400"}, {time:"20:00", price:500, stock:15, key:"S-18-1-2000"}]
-        }
-      ];
-    }
-  }
-
-  function fillDates(selectEl, sessions){
-    selectEl.innerHTML = sessions.map(s => `<option value="${s.date}">${toTRDate(s.date)}</option>`).join("");
-  }
-
-  function fillTimes(selectEl, sessions, dateVal){
-    const s = sessions.find(x => x.date === dateVal);
-    selectEl.innerHTML = (s?.times || []).map(t =>
-      `<option value="${t.key || t.time}" data-price="${t.price ?? ""}">
-        ${t.time}${t.stock!==undefined ? ` (Kalan: ${t.stock})` : ""}
-      </option>`
-    ).join("");
-  }
-
-  function updatePrice(priceEl, sessions, dateVal, timeKeyOrVal){
-    const sel = findSelection(sessions, dateVal, timeKeyOrVal);
-    priceEl.textContent = sel?.timeObj?.price ? `${sel.timeObj.price} ₺` : "—";
-  }
-
-  function findSelection(sessions, dateVal, timeKeyOrVal){
-    const s = sessions.find(x => x.date === dateVal);
-    if (!s) return null;
-    const timeObj = (s.times || []).find(t => (t.key || t.time) === timeKeyOrVal);
-    return { session_id: s.session_id, date: s.date, timeObj };
-  }
-
-  // 🔑 BACKEND /cart/items form-urlencoded gönder
-  async function addToCartForm(payload){
-    const token = getToken();
-    if (!token) throw new Error("Sepete eklemek için giriş yapın.");
-
-    const r = await fetch(`${BASE}/cart/items`, {
-      method: "POST",
-      headers: {
-        "Content-Type":"application/x-www-form-urlencoded",
-        "Authorization": `Bearer ${token}`
-      },
-      body: new URLSearchParams({
-        event_id: payload.event_id,
-        session_id: payload.session_id,
-        date: payload.date,
-        time: payload.time,
-        qty: String(payload.qty)
-      })
-    });
-    const j = await r.json();
-    if (!r.ok) throw new Error(j?.detail || "Sepete eklenemedi");
-    return j;
-  }
-
-  function toTRDate(iso){
-    const [y,m,d]=iso.split("-").map(Number);
-    const months=["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
-    return `${d} ${months[m-1]} ${y}`;
-  }
-})();
-</script>
-    
+  <!-- JS: Sıra önemli -->
+  <script src="config.js"></script>
+  <script src="nav.js"></script>
+  <script src="hamburger.js"></script>
+  <script src="chat.js"></script>
+  <script src="event-scheduler.js"></script>
 </body>
 </html>

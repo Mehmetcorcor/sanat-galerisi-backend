@@ -106,7 +106,7 @@ EVENT_SESSIONS = {
     "ayna-boyama": [
         {
             "session_id": "AB-12-1",
-            "date": "2025-09-27",
+            "date": "2025-09-28",
             "times": [
                 {"time": "13:00", "price": 800, "stock": 40, "key": "AB-12-1-1400"},
                 {"time": "18:00", "price": 800, "stock": 25, "key": "AB-12-1-1800"},
@@ -114,7 +114,7 @@ EVENT_SESSIONS = {
         },
         {
             "session_id": "AB-18-1",
-            "date": "2025-09-27",
+            "date": "2025-09-28",
             "times": [
                 {"time": "18:00", "price": 800, "stock": 40, "key": "AB-18-1-1400"},
                 {"time": "20:00", "price": 800, "stock": 15, "key": "AB-18-1-2000"},
