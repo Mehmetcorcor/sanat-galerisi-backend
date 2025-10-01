@@ -1,0 +1,7 @@
+User-agent:*
+Disallow: /admin.html
+Disallow: /auth.html
+Disallow: /cart.html
+Allow: /
+
+Sitemap: https://sevastudio.com/sitemap.xml

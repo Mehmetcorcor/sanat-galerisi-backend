@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://sevastudio.com/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Statik içerikler -->
+  <url><loc>https://sevastudio.com/workshop.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://sevastudio.com/seramikkurs.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://sevastudio.com/hakkimizda.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+
+  <!-- Etkinlik/Kurs sayfalarından örnekler -->
+  <url><loc>https://sevastudio.com/mum.html</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://sevastudio.com/ayna.html</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://sevastudio.com/dokulutuval.html</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://sevastudio.com/cini.html</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://sevastudio.com/amigurumi.html</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://sevastudio.com/kil.html</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://sevastudio.com/resimkurs.html</loc><changefreq>weekly</changefreq></url>
+
+  <!-- Sepet/Giriş/Admin genelde indekslenmez; robots’ta disallow verdik -->
+</urlset>

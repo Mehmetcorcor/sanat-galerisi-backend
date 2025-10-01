@@ -53,139 +53,137 @@
 
         <p id="ok" class="ok" style="display:none;">Ödeme bilgileri hazır ✅</p>
 
-        <!-- yeni: yönlendirmeyi kullanıcıya bırak -->
-        <div id="nextArea" class="row">
-          <button id="didPay">Ödemeyi yaptım, devam et</button>
-          <button id="printInfo" type="button">Yazdır / PDF</button>
+        <div class="card" style="margin-top: 10px;">
+          <strong>ÖNEMLİ - Ödeme Esnasında Lütfen Bu adımları izleyin:</strong>
+          <ol style="margin-top: 6px;">
+            <li><b>Açıklama</b>alanında ki <b>SEVA-XXXXX</b>kodunu bankanınız açıklama kısmına aynen yazın.Sizinle İletişime geçeceğimiz cep no bırakın.</li>
+            <li>Sepet Tutarını Yukarıda ki <b>IBAN</b>'a Havale/Fast İle Gönderin.</li>
+            <li>Gönderimden Sonra <b>"Ödemeyi Yaptım,Siparişi Kaydet"</b> butonuna basın.</li>
+            <li>Bu Butona Basmadan çıkarsanız siparişiniz sisteme düşmez / kontrol sırasına alınmaz</li>
+          </ol>
+          <label style="display: flex;gap: 8px;align-items: center;margin-top: 8px;">
+            <input id="mustCheck" type="checkbox">
+            <span>Havale/Fast yaptım ve açıklamaya kodu yazdım.</span>
+          </label>
+          <button id="confirmBtn" disabled style="margin-top: 8px;width: 100%;padding: 12px;border: none;border-radius: 10px;background: #8B4513;color: #fff;font-weight: 600;">
+            Ödemeyi Yaptım,Siparişi Kaydet
+          </button>
         </div>
-      </div>
 
       <p id="err" class="danger"></p>
     </div>
   </div>
-
-  <!-- backend adresini buradan alıyoruz -->
   <script src="config.js"></script>
-
   <script>
-  // backend kökü (config.js -> window.SEVA_API_BASE)
-  const BASE = (window.SEVA_API_BASE || "https://sanat-galerisi-backend.onrender.com").replace(/\/+$/,"");
-  const CART_KEY = "seva_cart";
-  const $ = (s)=>document.querySelector(s);
+    const BASE = (window.SEVA_API_BASE || "https://sanat-galerisi-backend.onrender.com").replace(/\/+$/,"");
+    const CART_KEY = "seva_cart";
+    const $ = (s)=>document.querySelector(s);
 
-  // URL?amount=750 geldiyse input'u otomatik doldur
-  (function autofillAmountFromURL(){
-    const params = new URLSearchParams(location.search);
-    if (params.has("amount")) {
-      const a = parseInt(params.get("amount"), 10);
-      if (!Number.isNaN(a) && a > 0) document.getElementById("amount").value = a;
-    }
-    // Son oluşturulan bilgileri geri yükle (sayfa kapanmışsa)
-    try {
-      const last = JSON.parse(localStorage.getItem("seva_last_payment") || "null");
-      if (last && last.aciklama && !document.getElementById("iban").textContent.trim()) {
-        fillPayment(last);
-        document.getElementById("result").style.display = "block";
-        document.getElementById("ok").style.display = "block";
-        document.getElementById("nextArea").style.display = "flex";
-        addLeaveGuard(); // uyarı aktif
+    let currentOrderNo = null;
+    let awaitingConfirm = false;
+
+    // URL?amount=750 geldiyse doldur
+    (function autofill(){
+      const p = new URLSearchParams(location.search);
+      const a = parseInt(p.get("amount")||"",10);
+      if(!Number.isNaN(a) && a>0) $("#amount").value = a;
+    })();
+
+    // Ayrılmayı engelle: kullanıcı siparişi kaydetmeden sayfadan çıkarsa uyar
+    window.addEventListener("beforeunload",(e)=>{
+      if (awaitingConfirm) {
+        e.preventDefault();
+        e.returnValue = "";
       }
-    } catch {}
-  })();
-
-  $("#genBtn").addEventListener("click", async () => {
-    $("#err").textContent = ""; $("#ok").style.display = "none";
-    const btn = $("#genBtn"); btn.disabled = true; btn.textContent = "Oluşturuluyor…";
-
-    const amount = parseInt($("#amount").value || "0", 10);
-    if (!amount || amount <= 0) {
-      $("#err").textContent = "Lütfen geçerli bir tutar girin.";
-      btn.disabled = false; btn.textContent = "Ödeme Bilgilerini Oluştur";
-      return;
-    }
-
-    // sepeti backend'e de gönderelim (bilgi amaçlı)
-    let items = [];
-    try { items = JSON.parse(localStorage.getItem(CART_KEY) || "[]"); } catch {}
-
-    const body = new URLSearchParams({
-      amount: String(amount),
-      items_json: JSON.stringify(items)
     });
 
-    const headers = { "Content-Type": "application/x-www-form-urlencoded" };
-    const token = localStorage.getItem("token");
-    if (token) headers["Authorization"] = `Bearer ${token}`;
+    // Ödeme bilgilerini oluştur
+    $("#genBtn").addEventListener("click", async () => {
+      $("#err").textContent = ""; $("#ok").style.display = "none";
+      $("#result").style.display = "none";
+      currentOrderNo = null;
+      awaitingConfirm = false;
 
-    try {
-      const r = await fetch(`${BASE}/payment/havale`, { method: "POST", headers, body });
-      const j = await r.json();
+      const amount = parseInt($("#amount").value||"0",10);
+      if(!amount || amount<=0){ $("#err").textContent="Lütfen geçerli bir tutar girin."; return; }
 
-      if(!r.ok){ $("#err").textContent = (j.detail || "Beklenmeyen hata"); return; }
+      // Sepeti ekle (backend'e bilgi olsun diye)
+      let items=[]; try{ items = JSON.parse(localStorage.getItem(CART_KEY)||"[]"); }catch{}
+      const headers = { "Content-Type":"application/x-www-form-urlencoded" };
+      const token = localStorage.getItem("token");
+      if (token) headers["Authorization"] = `Bearer ${token}`;
 
-      // ekrana yaz + localStorage'a kaydet
-      fillPayment(j);
-      localStorage.setItem("seva_last_payment", JSON.stringify(j));
+      const btn = $("#genBtn"); btn.disabled=true; btn.textContent="Oluşturuluyor…";
 
-      $("#result").style.display = "block";
-      $("#ok").style.display = "block";
-      document.getElementById("nextArea").style.display = "flex";
+      try{
+        const body = new URLSearchParams({ amount:String(amount), items_json: JSON.stringify(items) });
+        const r = await fetch(`${BASE}/payment/havale`, { method:"POST", headers, body });
+        const j = await r.json();
+        if(!r.ok) throw new Error(j?.detail || "Beklenmeyen hata");
 
-      // otomatik redirect yok!
-      addLeaveGuard(); // sayfadan ayrılma uyarısı aç
-    } catch (e) {
-      $("#err").textContent = e.message || "Bir hata oluştu.";
-    } finally {
-      btn.disabled = false; btn.textContent = "Ödeme Bilgilerini Oluştur";
-    }
-  });
+        // Ekrana yaz
+        $("#iban").textContent = j.iban;
+        $("#alici").textContent = j.alici;
+        $("#banka").textContent = j.banka || "-";
+        $("#tutar").textContent = j.tutar + " ₺";
+        $("#aciklama").textContent = j.aciklama;
+        currentOrderNo = j.order_no || null;
 
-  function fillPayment(j){
-    $("#iban").textContent = j.iban || "-";
-    $("#alici").textContent = j.alici || "-";
-    $("#banka").textContent = j.banka || "-";
-    $("#tutar").textContent = (j.tutar != null ? j.tutar : "-") + (j.tutar!=null ? " ₺" : "");
-    $("#aciklama").textContent = j.aciklama || (j.order_no ? ("SEVA-" + j.order_no) : "-");
+        // Talimatları göster, onay kutusunu sıfırla
+        $("#mustCheck").checked = false;
+        $("#confirmBtn").disabled = true;
 
-    // yazdır butonu
-    document.getElementById("printInfo").onclick = () => window.print();
+        $("#result").style.display = "block";
+        $("#ok").style.display = "block";
 
-    // kullanıcı onayladığında success'e geç
-    document.getElementById("didPay").onclick = () => {
-      // uyarıyı kaldırıp yönlendirelim
-      removeLeaveGuard();
-      localStorage.removeItem(CART_KEY);
-      const order = j.order_no ? encodeURIComponent(j.order_no) : "";
-      location.href = "success.html" + (order ? ("?order=" + order) : "");
-    };
-  }
+        // Bu noktada sipariş taslak/pending olarak backend'de açıldı.
+        // Kullanıcı sayfadan ayrılmasın:
+        awaitingConfirm = true;
 
-  // Kopyala butonları
-  document.addEventListener("click", (e)=>{
-    const btn = e.target.closest(".copy");
-    if(!btn) return;
-    const id = btn.getAttribute("data-copy");
-    const val = document.getElementById(id)?.textContent?.trim();
-    if(!val) return;
-    navigator.clipboard.writeText(val).then(()=> {
-      const old = btn.textContent;
-      btn.textContent = "Kopyalandı";
-      setTimeout(()=>btn.textContent = old || "Kopyala", 1200);
+        // Sepeti temizlemek istiyorsan:
+        // localStorage.removeItem(CART_KEY);
+      }catch(e){
+        $("#err").textContent = e.message || "Bir hata oluştu.";
+      }finally{
+        btn.disabled=false; btn.textContent="Ödeme Bilgilerini Oluştur";
+      }
     });
-  });
 
-  // Sayfadan ayrılma uyarısı (kullanıcı IBAN/açıklamayı kopyalasın diye)
-  let leaveGuard = null;
-  function addLeaveGuard(){
-    if (leaveGuard) return;
-    leaveGuard = (e) => { e.preventDefault(); e.returnValue = ""; };
-    window.addEventListener("beforeunload", leaveGuard);
-  }
-  function removeLeaveGuard(){
-    if (!leaveGuard) return;
-    window.removeEventListener("beforeunload", leaveGuard);
-    leaveGuard = null;
-  }
+    // Onay kutusu → buton aktif/pasif
+    $("#mustCheck")?.addEventListener("change", (e)=>{
+      $("#confirmBtn").disabled = !e.target.checked;
+    });
+
+    // “Ödemeyi Yaptım, Siparişi Kaydet”
+    $("#confirmBtn")?.addEventListener("click", async ()=>{
+      $("#err").textContent = "";
+      if (!currentOrderNo){ $("#err").textContent="Önce ödeme bilgilerini oluşturun."; return; }
+
+      try{
+        // İsteğe bağlı: admin'e bildirmek için statüyü 'pending' teyinleyebilir ya da ayrı bir endpoint varsa çağırabilirsiniz.
+        // await fetch(`${BASE}/orders/${currentOrderNo}/status?new_status=pending&admin_key=...`, { method:"PATCH" });
+
+        awaitingConfirm = false;          // Artık ayrılabilir
+        $("#ok").textContent = "Siparişiniz oluşturuldu. Ödemeniz kısa süre içinde kontrol edilecek. ✅";
+        $("#ok").style.display = "block";
+
+        // Otomatik yönlendirme İSTERSEN (3 sn sonra):
+        // setTimeout(()=>location.href = "success.html?order="+encodeURIComponent(currentOrderNo), 3000);
+      }catch(e){
+        $("#err").textContent = "Kaydetme sırasında sorun oluştu. Lütfen tekrar deneyin.";
+      }
+    });
+
+    // Kopyala butonları
+    document.addEventListener("click",(e)=>{
+      const btn = e.target.closest(".copy"); if(!btn) return;
+      const id = btn.getAttribute("data-copy");
+      const val = document.getElementById(id)?.textContent?.trim();
+      if(!val) return;
+      navigator.clipboard.writeText(val).then(()=>{
+        const old = btn.textContent; btn.textContent="Kopyalandı"; setTimeout(()=>btn.textContent=old||"Kopyala",1200);
+      });
+    });
   </script>
 </body>
 </html>
