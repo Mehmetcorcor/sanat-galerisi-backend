@@ -1,0 +1,53 @@
+/* Overlay */
+#october-discount-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.5);
+  display: none; /* JS açacak */
+  align-items: center; justify-content: center;
+  z-index: 9999;
+}
+
+/* Modal kutu */
+.october-modal {
+  position: relative;
+  width: min(92vw, 560px);
+  padding: 24px 20px 16px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 15px 50px rgba(0,0,0,.25);
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Başlık & metin */
+.october-modal h2{margin: 0 0 8px; font-size: 1.6rem;}
+.october-modal p{margin: 0 0 14px; font-size: 1rem;}
+
+/* CTA */
+.october-cta{
+  border: none; cursor: pointer;
+  padding: 10px 18px; border-radius: 999px;
+  font-weight: 600;
+  background: linear-gradient(90deg, #ff6a00, #ffcc00);
+}
+
+/* Kapat butonu */
+.october-close{
+  position: absolute; top: 6px; right: 8px;
+  width: 36px; height: 36px; border-radius: 50%;
+  border: none; background: #f2f2f2; cursor: pointer;
+  font-size: 24px; line-height: 36px;
+}
+
+/* Canvas kutuda alta sabit */
+#fireworks-canvas{
+  position: absolute; left: 0; right: 0; bottom: 0;
+  width: 100%; height: 55%;
+  pointer-events: none; /* tıklamayı engellemesin */
+}
+
+/* Küçük ekran uyumu */
+@media (max-width: 420px){
+  .october-modal h2{font-size: 1.3rem;}
+  .october-modal p{font-size: .95rem;}
+}

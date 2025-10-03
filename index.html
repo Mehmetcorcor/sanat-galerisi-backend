@@ -25,6 +25,7 @@
   <meta name="twitter:description" content="Sanat galerisi ve yaratıcı atölyelerle sanat dolu bir deneyim.">
   <meta name="twitter:image" content="https://www.sevastudio.com/resimler/og-default.jpg">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="promo.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <script type="application/ld+json">
@@ -63,6 +64,16 @@
             </div>
         </div>
     </div>
+    <!-- İndirim Modalı -->
+    <div id="october-discount-overlay" aria-hidden="true">
+      <div class="october-modal" role="dialog" aria-labelledby="october-discount-title" aria-modal="true">
+        <button class="october-close" aria-label="Kapat">×</button>
+        <h2 id="october-discount-title">Ekim Ayı Boyunca %10 İndirim!</h2>
+        <p>Ekim Ay'ı İndirimi, <strong>Bütün Etkinliklerde </strong> Uygulandı.Tek Yapman Gereken Sepete Eklemen.</p>
+        <button class="october-cta">Etkinliğe Git</button>
+        <canvas id="fireworks-canvas" width="600" height="400"></canvas>
+      </div>
+    </div>
 
     <!-- Chat Kısmı -->
     <button class="chat-toggle" onclick="toggleChat()">💬</button>
@@ -79,5 +90,6 @@
 
     <script src="config.js"></script>
     <script src="chat.js"></script>
+    <script src="promo.js"></script>
 </body>
 </html>
